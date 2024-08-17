@@ -5,8 +5,14 @@ import { NewPaymentPageComponent } from './new-payment-page/new-payment-page.com
 import { PaymentsPageComponent } from './payments-page/payments-page.component';
 
 const routes: Routes = [
-  { path: '', component: PaymentsPageComponent },
-  { path: 'new', component: NewPaymentPageComponent }
+  {
+    path: '',
+    component: PaymentsPageComponent,
+  },
+  {
+    path: 'new',
+    component: NewPaymentPageComponent,
+  }
 ];
 
 @NgModule({

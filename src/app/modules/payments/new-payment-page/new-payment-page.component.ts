@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { PaymentService } from '../../../services/payment/payment.service';
+import { PaymentService } from '../../../services/external/payment/index.service';
 
 @Component({
   selector: 'app-new-payment-page',

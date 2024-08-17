@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderBarComponent } from './components/header-bar/header-bar.component';
-import { AuthInterceptorService } from './services/auth/interceptor/auth-interceptor.service';
+import { AuthInterceptorService } from './services/internal/interceptor/index.service';
 
 @NgModule({
   declarations: [

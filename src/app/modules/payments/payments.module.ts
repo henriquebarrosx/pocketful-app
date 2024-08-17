@@ -10,8 +10,8 @@ import { ButtonComponent } from '../../components/button/button.component';
 @NgModule({
   declarations: [
     ButtonComponent,
+    NewPaymentPageComponent,
     PaymentsPageComponent,
-    NewPaymentPageComponent
   ],
   imports: [
     CommonModule,

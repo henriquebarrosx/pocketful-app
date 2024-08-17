@@ -2,7 +2,8 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
-import { SessionStorageService } from '../../session/storage/storage.service';
+import { SessionStorageService } from '../session-storage/index.service';
+
 
 @Injectable({
   providedIn: 'root'

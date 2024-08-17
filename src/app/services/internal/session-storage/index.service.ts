@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { SessionResponseDTO } from '../../../dtos/session/sign-in-response-dto';
 import { Session } from '../../../entities/session';
-import { SessionRole } from '../../../entities/session-role';
 
 @Injectable({
   providedIn: 'root'

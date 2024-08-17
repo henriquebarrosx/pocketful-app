@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 
 import { Payment } from '../../../entities/payment';
-import { PaymentService } from '../../../services/payment/payment.service';
+import { PaymentService } from '../../../services/external/payment/index.service';
 
 @Component({
   selector: 'app-payments-page',
