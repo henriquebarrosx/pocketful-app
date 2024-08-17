@@ -1,4 +1,4 @@
-export type PaymentCreationRequestDTO = {
+export type PaymentCreationParamsDTO = {
   amount: number;
   description: string;
   payed: boolean;

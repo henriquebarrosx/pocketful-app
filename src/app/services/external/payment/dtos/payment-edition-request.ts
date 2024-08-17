@@ -1,6 +1,6 @@
-import { PaymentSelectionOption } from "../../entities/payment-selection-option";
+import { PaymentSelectionOption } from "../../../../entities/payment-selection-option";
 
-export type PaymentEditionRequestDTO = {
+export type PaymentEditionParamsDTO = {
   id: number;
   amount: number;
   description: string;
