@@ -1,0 +1,94 @@
+<main>
+  <form>
+    <h1 class="text-2xl font-semibold text-slate-700">
+      Cadastrar pagamento
+    </h1>
+
+    <div class="container">
+      <fieldset class="flex flex-col w-full gap-2">
+        <label for="amount">
+          Valor
+        </label>
+
+        <div class="input-container">
+          <span class="input-prefix">R$</span>
+          <input id="amount" class="input-with-prefix" type="text" placeholder="0,00" />
+        </div>
+      </fieldset>
+
+      <fieldset class="flex flex-col w-full gap-2">
+        <label for="description">
+          Descrição
+        </label>
+
+        <input id="description" type="text" placeholder="Ex.: Transporte" />
+      </fieldset>
+
+      <fieldset class="flex flex-col w-full gap-2">
+        <label for="description">
+          Tipo
+        </label>
+
+        <select class=" bg-white h-11">
+          <option>Despesa</option>
+          <option>Entrada</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="flex flex-col w-full gap-2">
+        <div class="flex items-center justify-between">
+          <label for="description">
+            Categoria
+          </label>
+
+          <button type="button" title="Gerenciar categorias"
+            class="text-blue-500 hover:underline duration-200 ease-in-out">
+            Gerenciar
+          </button>
+        </div>
+
+        <select class=" bg-white h-11">
+          <option disabled>Carregando...</option>
+
+          <!-- <option value="category.id">
+            {{ category.name }}
+          </option> -->
+        </select>
+      </fieldset>
+
+      <fieldset class="flex flex-col w-full gap-2 sm:col-span-2">
+        <label for="description">
+          Recorrência
+        </label>
+
+        <div class="frequency-container">
+          <div class="input-container">
+            <input id="frequencyDay" placeholder="0" class="-l" />
+            <span class="input-sufix">dia</span>
+          </div>
+
+          <div class="input-container">
+            <input id="frequencyTimes" placeholder="0" class="-l" />
+            <span class="input-sufix">vezes</span>
+          </div>
+        </div>
+
+        <small class="summary-msg">
+          A repetição ocorrerá todo dia <strong class="underline">{{ formattedFrequencyDay }}</strong> por
+          <strong class="underline">{{ formatedFrequencyTimesText }}</strong>. Uma notificação será enviada via
+          e-mail até 5 dias antes alertando o vencimento! Defina como 0, caso o prazo seja indeterminado.
+        </small>
+      </fieldset>
+    </div>
+
+    <div class="footer">
+      <app-button [type]="'button'" [variant]="'white'" [size]="'large'" title="Cancelar">
+        CANCELAR
+      </app-button>
+
+      <app-button [type]="'submit'" [variant]="'primary'" [size]="'large'" title="Cadastrar transação">
+        CADASTRAR
+      </app-button>
+    </div>
+  </form>
+</main>
