@@ -1,13 +1,10 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
 import { SessionStorageService } from '../session-storage/index.service';
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthInterceptorService implements HttpInterceptor {
 
   constructor(
@@ -22,7 +19,10 @@ export class AuthInterceptorService implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         catchError((error) => {
-          if (error.status === 401) this.sessionStorageService.destroySession();
+          if (error.status === HttpStatusCode.Unauthorized) {
+            this.sessionStorageService.destroySession();
+          }
+
           return throwError(() => new Error(error.message));
         })
       );

@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { SessionResponseDTO } from '../../../dtos/session/sign-in-response-dto';
-import { Session } from '../../../entities/session';
+import { SignInResponseDTO } from '../../external/session/dtos/sign-in-response';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SessionStorageService {
   private SESSION_STORAGE_KEY = '@pocketful/session'
   private loggedIn = new BehaviorSubject<boolean>(false);
@@ -19,18 +16,17 @@ export class SessionStorageService {
     return this.loggedIn.asObservable();
   }
 
-  updateSession(session: Session): void {
+  updateSession(session: SignInResponseDTO): void {
     localStorage.setItem(this.SESSION_STORAGE_KEY, JSON.stringify(session));
     this.loggedIn.next(true);
   }
 
-  getSession(): Session | null {
+  getSession(): SignInResponseDTO | null {
     const session = localStorage.getItem(this.SESSION_STORAGE_KEY);
     if (!session) return null;
 
-    const sessionDTO: SessionResponseDTO = JSON.parse(session);
-    const { id, name, email, token, role } = sessionDTO;
-    return new Session(id, name, email, token, role);
+    const sessionDTO: SignInResponseDTO = JSON.parse(session);
+    return sessionDTO;
   }
 
   destroySession(): void {

@@ -4,7 +4,7 @@ import { Observable, take } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import { SignInRequestParamsDTO } from './dtos/sign-in-request';
-import { SignInResponseParamsDTO } from './dtos/sign-in-response-dto';
+import { SignInResponseDTO } from './dtos/sign-in-response';
 import { SignUpRequestParamsDTO } from './dtos/sign-up-request';
 
 @Injectable({ providedIn: 'root' })
@@ -12,8 +12,8 @@ export class SessionService {
 
   constructor(private httpClient: HttpClient) { }
 
-  signIn(payload: SignInRequestParamsDTO): Observable<SignInResponseParamsDTO> {
-    return this.httpClient.post<SignInResponseParamsDTO>(`${environment.API_BASE_URL}/api/auth/sign-in`, payload)
+  signIn(payload: SignInRequestParamsDTO): Observable<SignInResponseDTO> {
+    return this.httpClient.post<SignInResponseDTO>(`${environment.API_BASE_URL}/api/auth/sign-in`, payload)
       .pipe(take(1));
   }
 

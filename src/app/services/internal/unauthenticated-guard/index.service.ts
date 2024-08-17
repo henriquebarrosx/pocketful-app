@@ -4,14 +4,13 @@ import { map, Observable, take } from 'rxjs';
 
 import { SessionStorageService } from '../session-storage/index.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UnauthenticatedGuard {
 
   constructor(
     private sessionStorageService: SessionStorageService,
-    private router: Router) { }
+    private router: Router,
+  ) { }
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return this.sessionStorageService.isAuthenticated

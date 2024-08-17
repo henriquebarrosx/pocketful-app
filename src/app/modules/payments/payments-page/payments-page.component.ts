@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 
-import { Payment } from '../../../entities/payment';
+import { PaymentResponseDTO } from '../../../services/external/payment/dtos/payment-response';
 import { PaymentService } from '../../../services/external/payment/index.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { PaymentService } from '../../../services/external/payment/index.service
 })
 export class PaymentsPageComponent {
 
-  payments$: Observable<Payment[]>
+  payments$: Observable<PaymentResponseDTO[]>
   hasFailed: boolean = false
 
   constructor(private paymentService: PaymentService) {
