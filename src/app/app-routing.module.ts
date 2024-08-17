@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthenticatedGuard } from './services/session/authenticated-guard/guard.service';
+
 const routes: Routes = [
   {
     path: '',
@@ -9,11 +11,12 @@ const routes: Routes = [
   },
   {
     path: 'payments',
-    loadChildren: () => import('./modules/payments/payments.module').then((m) => m.PaymentsModule)
+    loadChildren: () => import('./modules/payments/payments.module').then((m) => m.PaymentsModule),
+    canActivate: [AuthenticatedGuard],
   },
   {
     path: 'auth',
-    loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule)
+    loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
 ];
 

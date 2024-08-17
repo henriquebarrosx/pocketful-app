@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 
-import { SignInRequestDTO } from '../../dtos/sign-in-request';
-import { SignUpRequestDTO } from '../../dtos/sign-up-request';
+import { SignInRequestDTO } from '../../dtos/session/sign-in-request';
+import { SignUpRequestDTO } from '../../dtos/session/sign-up-request';
 import { Session } from '../../entities/session';
 
 @Injectable({

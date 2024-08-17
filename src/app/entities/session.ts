@@ -2,10 +2,10 @@ import { SessionRole } from "./session-role";
 
 export class Session {
   constructor(
-    private id: number,
-    private name: string,
-    private email: string,
-    private token: string,
-    private role: SessionRole,
+    public id: number,
+    public name: string,
+    public email: string,
+    public token: string,
+    public role: SessionRole,
   ) { }
 }

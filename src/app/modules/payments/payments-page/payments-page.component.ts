@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { catchError, Observable, of } from 'rxjs';
+
+import { Payment } from '../../../entities/payment';
+import { PaymentService } from '../../../services/payment/payment.service';
 
 @Component({
   selector: 'app-payments-page',
   templateUrl: './payments-page.component.html',
   styleUrls: ['./payments-page.component.sass']
 })
-export class PaymentsPageComponent implements OnInit {
+export class PaymentsPageComponent {
 
-  constructor() { }
+  payments$: Observable<Payment[]>
+  hasFailed: boolean = false
 
-  ngOnInit(): void {
+  constructor(private paymentService: PaymentService) {
+    const from = '2024-07-01';
+    const to = '2024-07-30';
+
+    this.payments$ = this.paymentService
+      .getAll({ from, to })
+      .pipe(catchError(() => {
+        this.hasFailed = true
+        return of([])
+      }));
   }
 
 }

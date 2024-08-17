@@ -1,4 +1,4 @@
-import { PaymentSelectionOption } from "../entities/payment-selection-option";
+import { PaymentSelectionOption } from "../../entities/payment-selection-option";
 
 export type PaymentEditionRequestDTO = {
   id: number;

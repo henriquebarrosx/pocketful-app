@@ -1,1 +1,24 @@
-<p>payments-page works!</p>
+<p>Pagamentos</p>
+
+<div *ngIf="payments$ | async as payments; else loading">
+  <div *ngIf="!!payments.length; else isEmpty">
+    <div *ngFor="let payment of payments">
+      {{ payment.description }}
+    </div>
+  </div>
+
+  <ng-template #isEmpty>
+    <p>Nenhum pagamento encontrado.</p>
+  </ng-template>
+</div>
+
+<ng-template #loading>
+  Carregando...
+</ng-template>
+
+<div *ngIf="hasFailed">
+  <div>
+    <h6>Sentimos muito!</h6>
+    <p>Houve um problema ao buscar a lista de pagamentos</p>
+  </div>
+</div>

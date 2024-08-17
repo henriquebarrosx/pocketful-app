@@ -2,13 +2,13 @@ import { PaymentCategory } from "./payment-category";
 
 export class Payment {
   constructor(
-    private id: number,
-    private amount: number,
-    private description: string,
-    private isPayed: boolean,
-    private isExpense: boolean,
-    private frequencyTimes: number,
-    private deadlineAt: string,
-    private category: PaymentCategory
+    public id: number,
+    public amount: number,
+    public description: string,
+    public isPayed: boolean,
+    public isExpense: boolean,
+    public frequencyTimes: number,
+    public deadlineAt: string,
+    public category: PaymentCategory
   ) { }
 }
