@@ -1,0 +1,7 @@
+<section *ngIf="visible">
+  <div class="background" (click)="emitCloseEvent()"></div>
+
+  <div [ngClass]="[position]" class="dialog-container">
+    <ng-content></ng-content>
+  </div>
+</section>

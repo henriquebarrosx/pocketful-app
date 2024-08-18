@@ -1,13 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 
+import { ButtonComponent } from '../../../components/button/button.component';
 import { PaymentResponseDTO } from '../../../services/external/payment/dtos/payment-response';
 import { PaymentService } from '../../../services/external/payment/index.service';
 
 @Component({
   selector: 'app-payments-page',
   templateUrl: './payments-page.component.html',
-  styleUrls: ['./payments-page.component.sass']
+  styleUrls: ['./payments-page.component.sass'],
+  standalone: true,
+  imports: [CommonModule, ButtonComponent]
 })
 export class PaymentsPageComponent {
 
@@ -25,5 +29,7 @@ export class PaymentsPageComponent {
         return of([])
       }));
   }
+
+  onClick() { }
 
 }

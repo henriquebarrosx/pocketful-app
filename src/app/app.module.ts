@@ -4,18 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderBarComponent } from './components/header-bar/header-bar.component';
 import { AuthInterceptorService } from './services/internal/interceptor/index.service';
+import { HeaderBarComponent } from './components/header-bar/header-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderBarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    HeaderBarComponent,
   ],
   providers: [
     {

@@ -1,0 +1,33 @@
+@import 'src/styles'
+
+section
+  max-width: 1920px
+  margin: auto
+  padding: 40px
+  display: flex
+  flex-direction: column
+  gap: 24px
+
+  .header
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+    h1
+      color: $title
+
+.empty-message,
+.loading-feedback,
+.error-feedback
+  color: $gray
+
+.error-feedback
+  display: flex
+  flex-direction: column
+  gap: 8px
+  border: 1px dashed $light-gray
+  padding: 30px
+  border-radius: 4px
+
+  h6
+    font-size: 1rem

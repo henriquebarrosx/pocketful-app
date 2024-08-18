@@ -4,6 +4,7 @@ nav
   display: flex
   align-items: center
   justify-content: space-between
+  position: relative
   width: 100%
   height: 80px
   padding: 16px 40px
@@ -15,29 +16,47 @@ nav
     line-height: 2.25rem
     text-decoration: none
 
-  .auth-button-container
+  .right-side
     display: flex
     gap: 16px
     align-items: center
 
-    a
-      cursor: pointer
-      border: none
-      border-radius: 4px
-      padding: 10px 20px
-      transition: ease-in-out 200ms
-      text-decoration: none
+    .signed-account-container
+      display: flex
+      align-items: center
+      gap: 16px
 
-      font-size: 16px
-      font-weight: 600
-
-      &:first-child
+      .signed-account-name
         color: $white
-        background-color: $primary
+        font-size: 16px
+        font-weight: 600
 
-      &:last-child
-        color: $primary
-        background-color: $white
+      .arrow-container
+        display: flex
+        align-items: center
+        justify-content: center
 
-      &:hover
-        opacity: 0.8
+        height: 36px
+        width: 36px
+        border-radius: 100%
+        transition: ease-in-out 150ms
+
+        padding-top: 4px
+
+        &:hover
+          background-color: $light-white
+
+          svg
+            fill: $dark-gray
+
+        .dialog-container
+          width: 170px
+
+          span
+            font-weight: 500 !important
+
+            &:hover
+              text-decoration: underline
+
+    a:first-child
+      color: $white

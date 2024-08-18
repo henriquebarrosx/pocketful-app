@@ -1,24 +1,38 @@
-<p>Pagamentos</p>
+<section>
+  <div class="header">
+    <h1>Pagamentos</h1>
 
-<div *ngIf="payments$ | async as payments; else loading">
-  <div *ngIf="!!payments.length; else isEmpty">
-    <div *ngFor="let payment of payments">
-      {{ payment.description }}
+    <a href="/payments/new">
+      <app-button [variant]="'primary'" [size]="'large'" [type]="'button'" title="Cadastrar novo pagamento">
+        Novo
+      </app-button>
+    </a>
+  </div>
+
+  <div *ngIf="payments$ | async as payments; else loading">
+    <div *ngIf="!!payments.length; else isEmpty">
+      <div *ngFor="let payment of payments">
+        {{ payment.description }}
+      </div>
+    </div>
+
+    <ng-template #isEmpty>
+      <span *ngIf="!hasFailed" class="empty-message">
+        Nenhum pagamento encontrado.
+      </span>
+    </ng-template>
+  </div>
+
+  <ng-template #loading>
+    <span class="loading-feedback">
+      Carregando...
+    </span>
+  </ng-template>
+
+  <div *ngIf="hasFailed">
+    <div class="error-feedback">
+      <h6>Sentimos muito!</h6>
+      <span>Houve um problema ao buscar a lista de pagamentos</span>
     </div>
   </div>
-
-  <ng-template #isEmpty>
-    <p>Nenhum pagamento encontrado.</p>
-  </ng-template>
-</div>
-
-<ng-template #loading>
-  Carregando...
-</ng-template>
-
-<div *ngIf="hasFailed">
-  <div>
-    <h6>Sentimos muito!</h6>
-    <p>Houve um problema ao buscar a lista de pagamentos</p>
-  </div>
-</div>
+</section>

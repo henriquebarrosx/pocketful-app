@@ -1,15 +1,45 @@
 <nav class="flex items-center justify-between">
-  <a routerLink="/" class="logo font-lemon">
-    Wallet
+  <a href="/">
+    <app-button [variant]="'blank'" [size]="'small'" [type]="'button'" (click)="logout()">
+      <span class="logo font-lemon">Wallet</span>
+    </app-button>
   </a>
 
-  <div class="auth-button-container">
-    <a routerLink="/auth/sign-in">
-      Entrar
-    </a>
+  <div class="right-side">
+    <div *ngIf="isAuthenticated$ | async; else notSigned" class="signed-account-container">
+      <span class="signed-account-name">
+        {{ signedAccountName }}
+      </span>
 
-    <a routerLink="/auth/sign-up">
-      Cadastre-se
-    </a>
+      <div class="arrow-container">
+        <app-button [variant]="'blank'" [size]="'small'" [type]="'button'" (click)="openDialog()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path d="M480-360 280-560h400L480-360Z" />
+          </svg>
+        </app-button>
+
+        <app-simple-dialog [visible]="isDialogVisible" (close)="closeDialog()" [position]="'bottom'">
+          <div class="dialog-container">
+            <app-button [variant]="'blank'" [size]="'small'" [type]="'button'" (click)="logout()">
+              <span>Desconectar</span>
+            </app-button>
+          </div>
+        </app-simple-dialog>
+      </div>
+    </div>
+
+    <ng-template #notSigned>
+      <a href="/auth/sign-up">
+        <app-button [variant]="'blank'" [size]="'large'" [type]="'button'" title="Desconectar">
+          Entrar
+        </app-button>
+      </a>
+
+      <a href="/auth/sign-up">
+        <app-button [variant]="'white'" [size]="'large'" [type]="'button'" title="Desconectar">
+          Cadastre-se
+        </app-button>
+      </a>
+    </ng-template>
   </div>
 </nav>
