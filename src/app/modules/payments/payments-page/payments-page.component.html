@@ -11,7 +11,21 @@
     </a>
   </div>
 
-  <div *ngIf="payments$ | async as payments; else loading">
+  <div *ngIf="payments$ | async as payments; else loading" class="flex flex-col gap-6">
+    <form (ngSubmit)="getPayments()" [formGroup]="formControl" class="flex md:flex-row flex-col w-full gap-4">
+      <fieldset class="flex flex-col gap-2 border-none w-full md:w-64">
+        <label for="startAt" class="text-field-label">De</label>
+        <input type="date" [max]="formControl.get('endAt')" formControlName="startAt" placeholder="00/00/0000"
+          (change)="getPayments()" class="text-field" />
+      </fieldset>
+
+      <fieldset class="flex flex-col gap-2 border-none w-full md:w-64">
+        <label for="endAt" class="text-field-label">Para</label>
+        <input type="date" formControlName="endAt" placeholder="00/00/0000" (change)="getPayments()"
+          class="text-field" />
+      </fieldset>
+    </form>
+
     <div *ngIf="!!payments.length; else isEmpty">
       <div *ngFor="let payment of payments">
         {{ payment.description }}
