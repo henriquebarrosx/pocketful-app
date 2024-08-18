@@ -1,11 +1,13 @@
-<section>
-  <div class="header">
-    <h1>Pagamentos</h1>
+<section class="m-w-[1920px] mx-auto p-10 flex flex-col gap-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-semibold">
+      Pagamentos
+    </h1>
 
-    <a href="/payments/new">
-      <app-button [variant]="'primary'" [size]="'large'" [type]="'button'" title="Cadastrar novo pagamento">
-        Novo
-      </app-button>
+    <a href="/payments/new" class="w-28">
+      <button type="button" title="Cadastrar novo pagamento" class="btn btn-primary">
+        Cadastrar
+      </button>
     </a>
   </div>
 
@@ -17,22 +19,39 @@
     </div>
 
     <ng-template #isEmpty>
-      <span *ngIf="!hasFailed" class="empty-message">
+      <span *ngIf="!hasFailed" class="text-slate-500">
         Nenhum pagamento encontrado.
       </span>
     </ng-template>
   </div>
 
   <ng-template #loading>
-    <span class="loading-feedback">
+    <span class="text-slate-500">
       Carregando...
     </span>
   </ng-template>
 
-  <div *ngIf="hasFailed">
-    <div class="error-feedback">
-      <h6>Sentimos muito!</h6>
-      <span>Houve um problema ao buscar a lista de pagamentos</span>
+  <div *ngIf="hasFailed" class="flex flex-col items-center justify-center gap-8 p-8 h-48">
+    <div class="flex flex-col text-center text-slate-500 gap-3">
+      <span class="text-xl">
+        Sentimos muito!
+      </span>
+
+      <div class="flex flex-col">
+        <span class="text-md">
+          Parece que estamos enfrentando alguns problemas.
+        </span>
+
+        <span class="text-md">
+          Por favor, tente novamente mais tarde.
+        </span>
+      </div>
+    </div>
+
+    <div class="w-48">
+      <button (click)="getPayments()" class="btn btn-primary-outlined">
+        Tentar novamente
+      </button>
     </div>
   </div>
 </section>

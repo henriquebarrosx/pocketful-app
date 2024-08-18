@@ -15,21 +15,25 @@ import { PaymentService } from '../../../services/external/payment/index.service
 })
 export class PaymentsPageComponent {
 
-  payments$: Observable<PaymentResponseDTO[]>
+  payments$?: Observable<PaymentResponseDTO[]>
+
   hasFailed: boolean = false
+  startAt: string = '2024-07-01'
+  endAt: string = '2024-07-30'
 
   constructor(private paymentService: PaymentService) {
-    const from = '2024-07-01';
-    const to = '2024-07-30';
-
-    this.payments$ = this.paymentService
-      .getAll({ from, to })
-      .pipe(catchError(() => {
-        this.hasFailed = true
-        return of([])
-      }));
+    this.getPayments();
   }
 
-  onClick() { }
+  getPayments() {
+    this.payments$ = this.paymentService
+      .getAll({ from: this.startAt, to: this.endAt })
+      .pipe(
+        catchError(() => {
+          this.hasFailed = true
+          return of([])
+        })
+      );
+  }
 
 }
