@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthenticatedGuard } from './services/internal/authenticated-guard/index.service';
+import { PrivateRouteGuard } from './services/internal/private-route-guard/index.service';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: 'payments',
     loadChildren: () => import('./modules/payments/payments.module').then((m) => m.PaymentsModule),
-    canActivate: [AuthenticatedGuard],
+    canActivate: [PrivateRouteGuard],
   },
   {
     path: 'auth',

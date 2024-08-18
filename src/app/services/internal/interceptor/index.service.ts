@@ -2,13 +2,13 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } 
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
-import { SessionStorageService } from '../session-storage/index.service';
+import { SessionService } from '../session/index.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthInterceptorService implements HttpInterceptor {
 
   constructor(
-    private sessionStorageService: SessionStorageService,
+    private sessionService: SessionService,
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -20,7 +20,7 @@ export class AuthInterceptorService implements HttpInterceptor {
       .pipe(
         catchError((error) => {
           if (error.status === HttpStatusCode.Unauthorized) {
-            this.sessionStorageService.destroySession();
+            this.sessionService.destroy();
           }
 
           return throwError(() => new Error(error.message));
@@ -29,8 +29,9 @@ export class AuthInterceptorService implements HttpInterceptor {
   }
 
   private getAccessToken(): string {
-    if (!this.sessionStorageService.getSession()) return ''
-    return `Bearer ${this.sessionStorageService.getSession()?.token}`;
+    return this.sessionService.get()
+      ? `Bearer ${this.sessionService.get()?.token}`
+      : '';
   }
 
 }

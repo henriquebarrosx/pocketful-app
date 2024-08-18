@@ -8,7 +8,7 @@ import { SignInResponseDTO } from './dtos/sign-in-response';
 import { SignUpRequestParamsDTO } from './dtos/sign-up-request';
 
 @Injectable({ providedIn: 'root' })
-export class SessionService {
+export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
 
