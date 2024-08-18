@@ -1,1 +1,48 @@
-<p>sign-in-page works!</p>
+<section class="m-w-[1920px] mx-auto">
+  <form (ngSubmit)="onSubmit()" [formGroup]="formControl" class="max-w-lg p-10 flex flex-col gap-5 rounded">
+    <p *ngIf="isHelperMessageVisible" class="bg-red-100 flex p-4 rounded text-slate-600">
+      Algo não saiu como esperado. Verifique seus dados e tente novamente. Se o problema persistir, por favor, tente
+      novamente mais tarde.
+    </p>
+
+    <fieldset class="flex flex-col gap-2 border-none">
+      <label for="email" class="text-field-label">Email</label>
+      <input type="email" formControlName="email" placeholder="Ex.: john.doe@mail.com" class="text-field" />
+
+      <div *ngIf="isFieldValidationVisible(formControl, 'email')">
+        <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'required')" class="text-field-validation">
+          Campo obrigatório.
+        </span>
+
+        <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'email')" class="text-field-validation">
+          Formato de e-mail inválido.
+        </span>
+      </div>
+
+      <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
+        Email ou senha incorreta.
+      </span>
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-2 border-none">
+      <label for="password" class="text-field-label">Senha</label>
+      <input type="password" formControlName="password" placeholder="********" class="text-field" />
+
+      <div *ngIf="isFieldValidationVisible(formControl, 'password')">
+        <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'required')" class="text-field-validation">
+          Campo obrigatório.
+        </span>
+
+        <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'minlength')" class="text-field-validation">
+          Campo deve conter pelo menos 8 caracteres.
+        </span>
+      </div>
+    </fieldset>
+
+    <div class="flex w-full mt-4">
+      <button type="submit" [disabled]="isSubmitting" class="btn btn-primary h-12" title="Entrar">
+        {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </div>
+  </form>
+</section>

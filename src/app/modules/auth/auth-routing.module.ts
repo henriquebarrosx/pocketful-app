@@ -5,7 +5,7 @@ import { PublicRouteGuard } from '../../services/internal/public-route-guard/ind
 import { SignInPageComponent } from './sign-in-page/sign-in-page.component';
 import { SignUpPageComponent } from './sign-up-page/sign-up-page.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'sign-in',
     component: SignInPageComponent,
