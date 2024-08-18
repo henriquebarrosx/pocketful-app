@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { SignInResponseDTO } from '../../external/auth/dtos/sign-in-response';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
   private SESSION_STORAGE_KEY = '@pocketful/session'
-  private loggedIn = new BehaviorSubject<boolean>(false);
+  private cachedSession$ = new BehaviorSubject<SignInResponseDTO | null>(null);
 
   constructor() {
-    const hasStoredSession = !!this.get();
-    this.loggedIn.next(hasStoredSession);
+    const cachedSession = this.get();
+    this.cachedSession$.next(cachedSession);
   }
 
-  get isAuthenticated(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+  get session(): Observable<SignInResponseDTO | null> {
+    return this.cachedSession$.asObservable()
+  }
+
+  get bearerToken(): string {
+    return this.get() ? `Bearer ${this.get()?.token}` : '';
   }
 
   get(): SignInResponseDTO | null {
@@ -27,11 +31,11 @@ export class SessionService {
 
   save(session: SignInResponseDTO): void {
     localStorage.setItem(this.SESSION_STORAGE_KEY, JSON.stringify(session));
-    this.loggedIn.next(true);
+    this.cachedSession$.next(session);
   }
 
   destroy(): void {
     localStorage.removeItem(this.SESSION_STORAGE_KEY);
-    this.loggedIn.next(false);
+    this.cachedSession$.next(null);
   }
 }
