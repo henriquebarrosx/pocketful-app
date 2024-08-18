@@ -6,9 +6,9 @@
   </a>
 
   <div class="right-side">
-    <div *ngIf="isAuthenticated$ | async; else notSigned" class="signed-account-container">
+    <div *ngIf="isAuthenticated; else notSigned" class="signed-account-container">
       <span class="signed-account-name">
-        {{ signedAccountName }}
+        {{ sessionName }}
       </span>
 
       <div class="arrow-container">
