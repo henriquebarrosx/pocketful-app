@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PrivateRouteGuard } from './services/internal/private-route-guard/index.service';
+import { PrivateRouteGuard } from './shared/services/services/internal/private-route-guard/index.service';
 
 const routes: Routes = [
   {

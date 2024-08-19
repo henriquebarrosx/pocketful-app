@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { PaymentCreationParamsDTO } from './dtos/payment-creation-request';
 import { PaymentDeletionParamsDTO } from './dtos/payment-deletion-request';
 import { PaymentEditionParamsDTO } from './dtos/payment-edition-request';

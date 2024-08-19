@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { SignInRequestParamsDTO } from './dtos/sign-in-request';
 import { SignInResponseDTO } from './dtos/sign-in-response';
 import { SignUpRequestParamsDTO } from './dtos/sign-up-request';

@@ -2,9 +2,9 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { SignInResponseDTO } from '../../../services/external/auth/dtos/sign-in-response';
-import { AuthService } from '../../../services/external/auth/index.service';
-import { SessionService } from '../../../services/internal/session/index.service';
+import { SignInResponseDTO } from '../../../shared/services/external/auth/dtos/sign-in-response';
+import { AuthService } from '../../../shared/services/external/auth/index.service';
+import { SessionService } from '../../../shared/services/services/internal/session/index.service';
 
 @Component({
   selector: 'app-sign-in-page',
