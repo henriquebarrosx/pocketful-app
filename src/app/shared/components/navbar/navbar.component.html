@@ -1,8 +1,8 @@
 <nav class="flex items-center justify-between">
   <a href="/">
-    <app-button [variant]="'blank'" [size]="'small'" [type]="'button'" (click)="logout()">
+    <button class="btn" type="button" (click)="logout()">
       <span class="logo font-lemon">Wallet</span>
-    </app-button>
+    </button>
   </a>
 
   <div class="right-side">
@@ -12,17 +12,17 @@
       </span>
 
       <div class="arrow-container">
-        <app-button [variant]="'blank'" [size]="'small'" [type]="'button'" (click)="openDialog()">
+        <button type="button" (click)="openDialog()">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
             <path d="M480-360 280-560h400L480-360Z" />
           </svg>
-        </app-button>
+        </button>
 
         <app-simple-dialog [visible]="isDialogVisible" (close)="closeDialog()" [position]="'bottom'">
           <div class="dialog-container">
-            <app-button [variant]="'blank'" [size]="'small'" [type]="'button'" (click)="logout()">
+            <button type="button" (click)="logout()">
               <span>Desconectar</span>
-            </app-button>
+            </button>
           </div>
         </app-simple-dialog>
       </div>
@@ -30,15 +30,15 @@
 
     <ng-template #notSigned>
       <a href="/auth/sign-in">
-        <app-button [variant]="'blank'" [size]="'large'" [type]="'button'" title="Desconectar">
+        <button type="button" title="Desconectar">
           Entrar
-        </app-button>
+        </button>
       </a>
 
       <a href="/auth/sign-up">
-        <app-button [variant]="'white'" [size]="'large'" [type]="'button'" title="Desconectar">
+        <button class="btn btn-white" type="button" title="Desconectar">
           Cadastre-se
-        </app-button>
+        </button>
       </a>
     </ng-template>
   </div>

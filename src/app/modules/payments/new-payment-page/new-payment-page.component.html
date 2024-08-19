@@ -49,10 +49,6 @@
 
         <select class=" bg-white h-11">
           <option disabled>Carregando...</option>
-
-          <!-- <option value="category.id">
-            {{ category.name }}
-          </option> -->
         </select>
       </fieldset>
 
@@ -82,13 +78,13 @@
     </div>
 
     <div class="footer">
-      <app-button [type]="'button'" [variant]="'white'" [size]="'large'" title="Cancelar">
+      <button type="button" class="btn" title="Cancelar">
         CANCELAR
-      </app-button>
+      </button>
 
-      <app-button [type]="'submit'" [variant]="'primary'" [size]="'large'" title="Cadastrar transação">
+      <button type="submit" class="btn" title="Cadastrar transação">
         CADASTRAR
-      </app-button>
+      </button>
     </div>
   </form>
 </main>

@@ -5,17 +5,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './services/internal/interceptor/index.service';
-import { HeaderBarComponent } from './components/header-bar/header-bar.component';
+import { NavBarComponent } from './shared/components/navbar/navbar.component';
+import { SimpleDialogComponent } from './shared/components/simple-dialog/index.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    NavBarComponent,
+    SimpleDialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    HeaderBarComponent,
   ],
   providers: [
     {

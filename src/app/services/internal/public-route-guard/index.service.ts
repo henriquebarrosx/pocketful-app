@@ -22,7 +22,7 @@ export class PublicRouteGuard {
           }
 
           return true
-        }
+        },
       })
   }
 }

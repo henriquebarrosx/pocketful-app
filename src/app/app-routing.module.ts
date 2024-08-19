@@ -10,13 +10,15 @@ const routes: Routes = [
     redirectTo: 'payments'
   },
   {
-    path: 'payments',
-    loadChildren: () => import('./modules/payments/payments.module').then((m) => m.PaymentsModule),
-    canActivate: [PrivateRouteGuard],
+    path: 'auth',
+    loadChildren: () => import('./modules/auth/auth.module')
+      .then((m) => m.AuthModule),
   },
   {
-    path: 'auth',
-    loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
+    path: 'payments',
+    canActivate: [PrivateRouteGuard],
+    loadChildren: () => import('./modules/payments/payments.module')
+      .then((m) => m.PaymentsModule),
   },
 ];
 
