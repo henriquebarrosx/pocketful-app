@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, Observable, of } from 'rxjs';
 
-import { PaymentResponseDTO } from '../../../shared/services/external/payment/dtos/payment-response';
-import { PaymentService } from '../../../shared/services/external/payment/index.service';
-import { LocalDateService } from '../../../shared/services/services/internal/local-date/index.service';
-import { LocalDateFormat } from '../../../shared/services/services/internal/local-date/types';
+import { PaymentResponseDTO } from '../../shared/services/external/payment/dtos/payment-response';
+import { PaymentService } from '../../shared/services/external/payment/index.service';
+import { LocalDateService } from '../../shared/services/services/internal/local-date/index.service';
+import { LocalDateFormat } from '../../shared/services/services/internal/local-date/types';
 import { FormParams } from './types/form';
 
 @Component({

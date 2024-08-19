@@ -11,13 +11,13 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    loadChildren: () => import('./modules/auth/auth.module')
+    loadChildren: () => import('./auth/auth.module')
       .then((m) => m.AuthModule),
   },
   {
     path: 'payments',
     canActivate: [PrivateRouteGuard],
-    loadChildren: () => import('./modules/payments/payments.module')
+    loadChildren: () => import('./payments/payments.module')
       .then((m) => m.PaymentsModule),
   },
 ];
