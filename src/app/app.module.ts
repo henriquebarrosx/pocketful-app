@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './shared/components/navbar/navbar.component';
 import { SimpleDialogComponent } from './shared/components/simple-dialog/index.component';
-import { AuthInterceptorService } from './shared/services/services/internal/interceptor/index.service';
+import { AuthInterceptorService } from './shared/services/internal/interceptor/index.service';
 
 @NgModule({
   declarations: [

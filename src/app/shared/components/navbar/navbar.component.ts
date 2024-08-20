@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { AuthService } from '../../services/external/auth/index.service';
-import { SessionService } from '../../services/services/internal/session/index.service';
+import { SessionService } from '../../services/internal/session/index.service';
 
 @Component({
   selector: 'app-navbar',

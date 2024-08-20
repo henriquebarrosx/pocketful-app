@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { SignInResponseDTO } from '../../../external/auth/dtos/sign-in-response';
+import { SignInResponseDTO } from '../../external/auth/dtos/sign-in-response';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {

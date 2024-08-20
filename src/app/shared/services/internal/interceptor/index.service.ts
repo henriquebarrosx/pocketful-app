@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } 
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
-import { routes } from '../../../../../auth/auth-routing.module';
+import { routes } from '../../../../auth/auth-routing.module';
 import { SessionService } from '../session/index.service';
 
 @Injectable({ providedIn: 'root' })
