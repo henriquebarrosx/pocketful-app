@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { SignInResponseDTO } from '../../shared/services/external/auth/dtos/sign-in-response';
 import { AuthService } from '../../shared/services/external/auth/index.service';
+import { LoggerService } from '../../shared/services/internal/logger/logger.service';
 import { SessionService } from '../../shared/services/internal/session/index.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class SignInPageComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private sessionService: SessionService,
+    private loggerService: LoggerService,
   ) {
     this.formControl = this.formBuilder
       .group({
@@ -32,6 +34,7 @@ export class SignInPageComponent {
   onSubmit() {
     if (this.formControl.valid) {
       this.isSubmitting = true
+      this.isInvalidCredentialsVisible = false
       this.isHelperMessageVisible = false
       this.signIn()
       return
@@ -41,10 +44,13 @@ export class SignInPageComponent {
   }
 
   private signIn() {
+
     const payload = {
       email: this.formControl.value.email,
       password: this.formControl.value.password
     }
+
+    this.loggerService.info('enviando solicitação de autenticação', payload)
 
     this.authService.signIn(payload)
       .subscribe({
@@ -54,16 +60,19 @@ export class SignInPageComponent {
   }
 
   private onSuccess(session: SignInResponseDTO) {
+    this.loggerService.info('usuário autenticado com sucesso. Redirecionando para o pagamentos.')
     this.isSubmitting = false;
     this.sessionService.save(session)
   }
 
   private onError(error: HttpErrorResponse) {
     if (error.status === HttpStatusCode.Unauthorized) {
+      this.loggerService.error('Erro ao processar autenticação. Credenciais inválidas!')
       this.isInvalidCredentialsVisible = true
     }
 
-    else if (error.status === HttpStatusCode.InternalServerError) {
+    else {
+      this.loggerService.error('Erro ao processar autenticação. Erro inesperado!', { error })
       this.isHelperMessageVisible = true
     }
 

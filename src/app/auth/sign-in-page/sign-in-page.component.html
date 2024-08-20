@@ -1,48 +1,76 @@
-<section class="m-w-[1920px] mx-auto">
-  <form (ngSubmit)="onSubmit()" [formGroup]="formControl" class="max-w-lg p-10 flex flex-col gap-5 rounded">
-    <p *ngIf="isHelperMessageVisible" class="bg-red-100 flex p-4 rounded text-slate-600">
-      Algo não saiu como esperado. Verifique seus dados e tente novamente. Se o problema persistir, por favor, tente
-      novamente mais tarde.
-    </p>
+<section class="grid lg:grid-cols-2 h-screen">
+  <div class="flex flex-col items-center justify-center p-5 sm:p-10 gap-10 max-w-[550px] mx-auto">
+    <span class="font-lemon text-4xl text-slate-800">
+      Pocketful
+    </span>
 
-    <fieldset class="flex flex-col gap-2 border-none">
-      <label for="email" class="text-field-label">Email</label>
-      <input type="email" formControlName="email" placeholder="Ex.: john.doe@mail.com" class="text-field" />
-
-      <div *ngIf="isFieldValidationVisible(formControl, 'email')">
-        <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'required')" class="text-field-validation">
-          Campo obrigatório.
-        </span>
-
-        <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'email')" class="text-field-validation">
-          Formato de e-mail inválido.
-        </span>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formControl" class="flex flex-col gap-8 rounded">
+      <div class="flex flex-col gap-5">
+        <p class="text-md text-slate-500 font-medium">
+          Faça login ou registre-se para começar a ficar no controle de seus pagamentos ainda hoje.
+        </p>
       </div>
 
-      <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
-        Email ou senha incorreta.
-      </span>
-    </fieldset>
+      <div *ngIf="isHelperMessageVisible" class="bg-red-50 flex flex-col p-4 text-red-500 rounded">
+        <span>Estamos com problemas.</span>
+        <span>Por favor, tente novamente mais tarde.</span>
+      </div>
 
-    <fieldset class="flex flex-col gap-2 border-none">
-      <label for="password" class="text-field-label">Senha</label>
-      <input type="password" formControlName="password" placeholder="********" class="text-field" />
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-4">
+          <fieldset class="flex flex-col gap-2 border-none">
+            <label for="email" class="text-field-label">Email</label>
+            <input type="email" formControlName="email" placeholder="Digite seu e-mail" class="text-field" />
 
-      <div *ngIf="isFieldValidationVisible(formControl, 'password')">
-        <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'required')" class="text-field-validation">
-          Campo obrigatório.
-        </span>
+            <div *ngIf="isFieldValidationVisible(formControl, 'email')">
+              <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'required')" class="text-field-validation">
+                Campo obrigatório.
+              </span>
 
-        <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'minlength')" class="text-field-validation">
-          Campo deve conter pelo menos 8 caracteres.
+              <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'email')" class="text-field-validation">
+                Formato de e-mail inválido.
+              </span>
+            </div>
+
+            <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
+              Email ou senha incorreta.
+            </span>
+          </fieldset>
+
+          <fieldset class="flex flex-col gap-2 border-none">
+            <label for="password" class="text-field-label">Senha</label>
+            <input type="password" formControlName="password" placeholder="Digite sua senha" class="text-field" />
+
+            <div *ngIf="isFieldValidationVisible(formControl, 'password')">
+              <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'required')" class="text-field-validation">
+                Campo obrigatório.
+              </span>
+
+              <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'minlength')"
+                class="text-field-validation">
+                Campo deve conter pelo menos 8 caracteres.
+              </span>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="flex w-full mt-4">
+          <button type="submit" [disabled]="isSubmitting" class="btn btn-primary h-14" title="Entrar">
+            {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <span class="text-slate-500">
+          Ainda não tem uma conta? <a href="/auth/sign-up"
+            class="primary-color font-bold hover:underline">Inscreva-se</a>
         </span>
       </div>
-    </fieldset>
+    </form>
+  </div>
 
-    <div class="flex w-full mt-4">
-      <button type="submit" [disabled]="isSubmitting" class="btn btn-primary h-12" title="Entrar">
-        {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
-      </button>
-    </div>
-  </form>
+  <div class="hidden lg:flex">
+    <img src="assets/sign-in-wallpaper.jpg" />
+  </div>
 </section>

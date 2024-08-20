@@ -1,1 +1,94 @@
-<p>sign-up-page works!</p>
+<section class="grid lg:grid-cols-2 h-screen">
+  <div class="flex flex-col items-center justify-center p-10 gap-10 max-w-[550px] mx-auto">
+    <span class="font-lemon text-4xl text-slate-800">
+      Pocketful
+    </span>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="formControl" class="flex flex-col gap-8 rounded">
+      <div class="flex flex-col gap-5">
+        <p class="text-md text-slate-500 font-medium">
+          Crie sua conta para começar a gerenciar seus pagamentos com facilidade e segurança. É rápido e simples!
+        </p>
+      </div>
+
+      <div *ngIf="isHelperMessageVisible" class="bg-red-50 flex flex-col p-4 text-red-500 rounded">
+        <span>Estamos com problemas.</span>
+        <span>Por favor, tente novamente mais tarde.</span>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-4">
+          <fieldset class="flex flex-col gap-2 border-none">
+            <label for="name" class="text-field-label">Nome</label>
+            <input type="text" formControlName="name" placeholder="Digite seu nome" class="text-field" />
+
+            <div *ngIf="isFieldValidationVisible(formControl, 'name')">
+              <span *ngIf="validatePresenceOfErrors(formControl, 'name', 'required')" class="text-field-validation">
+                Campo obrigatório.
+              </span>
+            </div>
+
+            <span *ngIf="validatePresenceOfErrors(formControl, 'name', 'minlength')" class="text-field-validation">
+              Campo deve conter pelo menos 3 caracteres.
+            </span>
+
+            <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
+              Email ou senha incorreta.
+            </span>
+          </fieldset>
+
+          <fieldset class="flex flex-col gap-2 border-none">
+            <label for="email" class="text-field-label">Email</label>
+            <input type="email" formControlName="email" placeholder="Digite seu e-mail" class="text-field" />
+
+            <div *ngIf="isFieldValidationVisible(formControl, 'email')">
+              <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'required')" class="text-field-validation">
+                Campo obrigatório.
+              </span>
+
+              <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'email')" class="text-field-validation">
+                Formato de e-mail inválido.
+              </span>
+            </div>
+
+            <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
+              Email ou senha incorreta.
+            </span>
+          </fieldset>
+
+          <fieldset class="flex flex-col gap-2 border-none">
+            <label for="password" class="text-field-label">Senha</label>
+            <input type="password" formControlName="password" placeholder="Digite sua senha" class="text-field" />
+
+            <div *ngIf="isFieldValidationVisible(formControl, 'password')">
+              <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'required')" class="text-field-validation">
+                Campo obrigatório.
+              </span>
+
+              <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'minlength')"
+                class="text-field-validation">
+                Campo deve conter pelo menos 8 caracteres.
+              </span>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="flex w-full mt-4">
+          <button type="submit" [disabled]="isSubmitting" class="btn btn-primary h-14" title="Cadastrar">
+            {{ isSubmitting ? 'Cadastrando...' : 'Cadastrar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <span class="text-slate-500">
+          Já possui uma conta? <a href="/auth/sign-in" class="primary-color font-bold hover:underline">Entrar</a>
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <div class="hidden lg:flex">
+    <img src="assets/sign-in-wallpaper.jpg" />
+  </div>
+</section>
