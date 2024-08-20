@@ -53,13 +53,13 @@ export class PaymentsPageComponent {
   private getStartofMonth(): string {
     const now = new Date().toISOString()
     const startOfMonthDate = this.localDate.getStartOfMonth(now)
-    return this.localDate.format(startOfMonthDate, LocalDateFormat.YYYY_MM_DD)
+    return this.localDate.format(startOfMonthDate, LocalDateFormat.ISO_DATE)
   }
 
   private getEndOfMonth() {
     const now = new Date().toISOString()
     const startOfMonthDate = this.localDate.getEndOfMonth(now)
-    return this.localDate.format(startOfMonthDate, LocalDateFormat.YYYY_MM_DD)
+    return this.localDate.format(startOfMonthDate, LocalDateFormat.ISO_DATE)
   }
 
 }
