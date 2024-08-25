@@ -85,7 +85,7 @@ export class SignInPageComponent {
 
     if (!control) return false;
     if (!control.invalid) return false
-    return control.touched;
+    return control.touched && control.dirty;
   }
 
   validatePresenceOfErrors(formControl: FormGroup<any>, name: string, validation: string): boolean {
