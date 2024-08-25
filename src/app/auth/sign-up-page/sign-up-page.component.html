@@ -31,10 +31,6 @@
             <span *ngIf="validatePresenceOfErrors(formControl, 'name', 'minlength')" class="text-field-validation">
               Campo deve conter pelo menos 3 caracteres.
             </span>
-
-            <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
-              Email ou senha incorreta.
-            </span>
           </fieldset>
 
           <fieldset class="flex flex-col gap-2 border-none">
@@ -51,8 +47,9 @@
               </span>
             </div>
 
-            <span *ngIf="isInvalidCredentialsVisible" class="text-field-validation">
-              Email ou senha incorreta.
+            <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'emailAlreadyRegistered')"
+              class="text-field-validation">
+              Email já cadastrado
             </span>
           </fieldset>
 

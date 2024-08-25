@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -67,7 +67,16 @@ export class SignUpPageComponent {
 
   private onError(error: HttpErrorResponse) {
     this.loggerService.error('Erro ao processar cadastro. Erro inesperado!', { error })
-    this.isHelperMessageVisible = true
+
+    if (error.status === HttpStatusCode.Conflict) {
+      const field = this.formControl.get('email');
+      if (!field) throw new Error('missing email field');
+      field.setErrors({ emailAlreadyRegistered: true });
+    }
+
+    else {
+      this.isHelperMessageVisible = true
+    }
 
     this.isSubmitting = false;
     this.formControl.markAllAsTouched()
