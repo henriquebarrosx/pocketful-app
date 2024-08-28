@@ -1,43 +1,68 @@
-<main>
-  <form>
+<main class="p-8 max-w-3xl mx-auto">
+  <form (ngSubmit)="onSubmit()" [formGroup]="formControl" class="flex flex-col gap-6 md:gap-6 w-full">
     <h1 class="text-2xl font-semibold text-slate-700">
       Cadastrar pagamento
     </h1>
 
-    <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="amount">
+        <label for="amount" class="font-semibold text-slate-700">
           Valor
         </label>
 
-        <div class="input-container">
-          <span class="input-prefix">R$</span>
-          <input id="amount" class="input-with-prefix" type="text" placeholder="0,00" />
+        <div class="flex items-center w-full">
+          <span class="flex items-center h-12 py-2 px-4 text-white rounded-l bg-slate-600">
+            R$
+          </span>
+
+          <input id="amount" formControlName="amount" type="text" placeholder="0,00"
+            class="w-full px-4 h-12 border border-slate-200 rounded-r" />
+        </div>
+
+        <div *ngIf="isFieldValidationVisible(formControl, 'amount')">
+          <span *ngIf="validatePresenceOfErrors(formControl, 'amount', 'required')" class="text-field-validation">
+            Campo obrigatório.
+          </span>
         </div>
       </fieldset>
 
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="description">
+        <label for="description" class="font-semibold text-slate-700">
           Descrição
         </label>
 
-        <input id="description" type="text" placeholder="Ex.: Transporte" />
-      </fieldset>
+        <input id="description" formControlName="description" type="text" placeholder="Ex.: Transporte"
+          class="w-full px-4 h-12 border border-slate-200 rounded" />
 
+        <div *ngIf="isFieldValidationVisible(formControl, 'description')">
+          <span *ngIf="validatePresenceOfErrors(formControl, 'description', 'required')" class="text-field-validation">
+            Campo obrigatório.
+          </span>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="description">
+        <label for="type" class="font-semibold text-slate-700">
           Tipo
         </label>
 
-        <select class=" bg-white h-11">
+        <select formControlName="type" class="w-full px-4 h-12 border border-slate-200 rounded">
           <option>Despesa</option>
           <option>Entrada</option>
         </select>
+
+        <div *ngIf="isFieldValidationVisible(formControl, 'type')">
+          <span *ngIf="validatePresenceOfErrors(formControl, 'description', 'required')" class="text-field-validation">
+            Campo obrigatório.
+          </span>
+        </div>
       </fieldset>
 
       <fieldset class="flex flex-col w-full gap-2">
         <div class="flex items-center justify-between">
-          <label for="description">
+          <label for="description" class="font-semibold text-slate-700">
             Categoria
           </label>
 
@@ -47,44 +72,92 @@
           </button>
         </div>
 
-        <select class=" bg-white h-11">
-          <option disabled>Carregando...</option>
-        </select>
-      </fieldset>
+        <section class="relative">
+          <input type="text" formControlName="category" (focus)="displayCategories()"
+            placeholder="Selecione uma categoria" class="w-full px-4 h-12 border border-slate-200 rounded">
 
-      <fieldset class="flex flex-col w-full gap-2 sm:col-span-2">
-        <label for="description">
-          Recorrência
-        </label>
+          <div *ngIf="isCategoriesVisible"
+            class="absolute flex flex-col w-full border bg-white max-h-72 overflow-y-auto overflow-x-hidden">
+            <ng-container *ngIf="categories$ | async as categorias; else isLoading">
+              <ng-container *ngIf="categorias.length; else noData">
+                <span *ngFor="let categoria of categorias" class="w-full h-full pointer hover:bg-slate-100 p-3">
+                  {{ categoria.name }}
+                </span>
+              </ng-container>
 
-        <div class="frequency-container">
-          <div class="input-container">
-            <input id="frequencyDay" placeholder="0" class="-l" />
-            <span class="input-sufix">dia</span>
+              <ng-template #noData>
+                <span>Nenhuma categoria encontrada</span>
+              </ng-template>
+            </ng-container>
+
+            <ng-template #isLoading>
+              <span>Carregando...</span>
+            </ng-template>
           </div>
+        </section>
 
-          <div class="input-container">
-            <input id="frequencyTimes" placeholder="0" class="-l" />
-            <span class="input-sufix">vezes</span>
-          </div>
+        <div *ngIf="isFieldValidationVisible(formControl, 'category')">
+          <span *ngIf="validatePresenceOfErrors(formControl, 'category', 'required')" class="text-field-validation">
+            Campo obrigatório.
+          </span>
         </div>
-
-        <small class="summary-msg">
-          A repetição ocorrerá todo dia <strong class="underline">{{ formattedFrequencyDay }}</strong> por
-          <strong class="underline">{{ formatedFrequencyTimesText }}</strong>. Uma notificação será enviada via
-          e-mail até 5 dias antes alertando o vencimento! Defina como 0, caso o prazo seja indeterminado.
-        </small>
       </fieldset>
     </div>
 
-    <div class="footer">
-      <button type="button" class="btn" title="Cancelar">
-        CANCELAR
-      </button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-end">
+      <fieldset class="flex flex-col w-full gap-2">
+        <label for="dayOfMonth" class="font-semibold text-slate-700">
+          Dia do mês
+        </label>
 
-      <button type="submit" class="btn" title="Cadastrar transação">
+        <input formControlName="dayOfMonth" placeholder="Ex.: 05"
+          class="w-full px-4 h-12 border border-slate-200 rounded" />
+
+        <div *ngIf="isFieldValidationVisible(formControl, 'dayOfMonth')">
+          <span *ngIf="validatePresenceOfErrors(formControl, 'dayOfMonth', 'required')" class="text-field-validation">
+            Campo obrigatório.
+          </span>
+        </div>
+      </fieldset>
+
+      <fieldset class="flex flex-col w-full gap-2">
+        <label for="times" class="font-semibold text-slate-700">
+          Número repetições
+        </label>
+
+        <div class="flex items-center">
+          <input formControlName="times" placeholder="Ex.: 10"
+            class="w-full px-4 h-12 border border-slate-200 rounded" />
+
+          <span class="flex items-center w-24 h-12 py-2 px-4 text-white rounded-r bg-slate-600">
+            vezes
+          </span>
+        </div>
+
+        <div *ngIf="isFieldValidationVisible(formControl, 'times')">
+          <span *ngIf="validatePresenceOfErrors(formControl, 'times', 'required')" class="text-field-validation">
+            Campo obrigatório.
+          </span>
+        </div>
+      </fieldset>
+    </div>
+
+    <small class="w-full">
+      Será gerado um novo pagamento no valor de <strong class="underline">{{ valor }}</strong> no decorrer de
+      <strong class="underline">{{ totaisMeses }}</strong> todo dia <strong class="underline">{{ diaMes }}</strong>.
+      Uma notificação será enviada via e-mail até 5 dias antes alertando o vencimento!
+    </small>
+
+    <div class="flex flex-col gap-6">
+      <button type="submit" class="btn btn-primary h-16" title="Cadastrar transação">
         CADASTRAR
       </button>
+
+      <a href="/">
+        <button type="button" class="btn btn-primary-outlined h-16" title="Cancelar">
+          VOLTAR
+        </button>
+      </a>
     </div>
   </form>
 </main>

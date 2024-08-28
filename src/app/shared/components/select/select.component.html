@@ -1,0 +1,27 @@
+<!-- <section class="relative">
+  <input type="text" formControlName="category" (focus)="displayCategories()" placeholder="Selecione uma categoria"
+    class="w-full px-4 h-12 border border-slate-200 rounded">
+
+  <div *ngIf="isCategoriesVisible"
+    class="absolute flex flex-col w-full border bg-white max-h-72 overflow-y-auto overflow-x-hidden">
+    <ng-container *ngIf="categories$ | async as categorias; else isLoading">
+      <ng-container *ngIf="categorias.length; else noData">
+        <span *ngFor="let categoria of categorias" class="w-full h-full pointer hover:bg-slate-100 p-3">
+          {{ categoria.name }}
+        </span>
+      </ng-container>
+
+      <ng-template #noData>
+        <span>Nenhuma categoria encontrada</span>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #isLoading>
+      <span>Carregando...</span>
+    </ng-template>
+  </div>
+</section> -->
+
+<select (focus)="onFocus()" [value]="value" (change)="onChange($event.target.value)">
+  <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>
+</select>
