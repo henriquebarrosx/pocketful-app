@@ -1,6 +1,10 @@
 {
   "name": "pocketful-app",
   "version": "0.0.0",
+  "engines": {
+    "node": "20.17.0",
+    "npm": "10.8.2"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
