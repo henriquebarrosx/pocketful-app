@@ -7,14 +7,12 @@ import { AppComponent } from './app.component';
 import { NavBarComponent } from './shared/components/navbar/navbar.component';
 import { SimpleDialogComponent } from './shared/components/simple-dialog/index.component';
 import { AuthInterceptorService } from './shared/services/internal/interceptor/index.service';
-import { SelectComponent } from './shared/components/select/select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     SimpleDialogComponent,
-    SelectComponent,
   ],
   imports: [
     BrowserModule,
