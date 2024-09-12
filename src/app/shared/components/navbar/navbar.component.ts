@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { AuthService } from '../../services/external/auth/index.service';
 import { SessionService } from '../../services/internal/session/index.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -24,12 +25,9 @@ export class NavBarComponent {
   }
 
   logout() {
-    this.authService.signOut().subscribe({
-      next: () => {
-        this.closeDialog()
-        this.sessionService.destroy()
-      }
-    })
+    this.authService.signOut()
+      .pipe(finalize(() => this.sessionService.destroy()))
+      .subscribe(() => this.closeDialog())
   }
 
   openDialog() {
