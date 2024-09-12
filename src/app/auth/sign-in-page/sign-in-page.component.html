@@ -20,7 +20,8 @@
         <div class="flex flex-col gap-4">
           <fieldset class="flex flex-col gap-2 border-none">
             <label for="email" class="text-field-label">Email</label>
-            <input type="email" formControlName="email" placeholder="Digite seu e-mail" class="text-field" />
+            <input type="email" formControlName="email" placeholder="Digite seu e-mail" class="text-field"
+              [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formControl, 'email') || isInvalidCredentialsVisible }" />
 
             <div *ngIf="isFieldValidationVisible(formControl, 'email')">
               <span *ngIf="validatePresenceOfErrors(formControl, 'email', 'required')" class="text-field-validation">
@@ -39,7 +40,8 @@
 
           <fieldset class="flex flex-col gap-2 border-none">
             <label for="password" class="text-field-label">Senha</label>
-            <input type="password" formControlName="password" placeholder="Digite sua senha" class="text-field" />
+            <input type="password" formControlName="password" placeholder="Digite sua senha" class="text-field"
+              [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formControl, 'password') }" />
 
             <div *ngIf="isFieldValidationVisible(formControl, 'password')">
               <span *ngIf="validatePresenceOfErrors(formControl, 'password', 'required')" class="text-field-validation">

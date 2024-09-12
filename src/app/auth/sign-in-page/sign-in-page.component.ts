@@ -85,7 +85,14 @@ export class SignInPageComponent {
 
     if (!control) return false;
     if (!control.invalid) return false
-    return control.touched && control.dirty;
+    return control.touched || control.dirty;
+  }
+
+  isFieldHintDisplayed(formControl: FormGroup<any>, name: string): boolean {
+    const control = formControl.get(name)
+    if (!control) return false;
+
+    return !!control.errors && control.touched
   }
 
   validatePresenceOfErrors(formControl: FormGroup<any>, name: string, validation: string): boolean {
