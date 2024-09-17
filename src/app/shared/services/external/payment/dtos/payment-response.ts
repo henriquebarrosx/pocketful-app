@@ -2,11 +2,11 @@ export type PaymentResponseDTO = {
   id: number;
   amount: number;
   description: string;
-  isPayed: boolean;
-  isExpense: boolean;
+  payed: boolean;
+  expense: boolean;
   frequencyTimes: number;
   deadlineAt: string;
-  category: PaymentCategory;
+  paymentCategory: PaymentCategory;
 }
 
 export type PaymentCategory = {

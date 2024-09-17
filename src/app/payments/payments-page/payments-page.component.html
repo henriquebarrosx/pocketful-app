@@ -1,4 +1,4 @@
-<section class="max-w-[1920px] mx-auto my-[5vh] p-5 sm:p-10 flex flex-col gap-6">
+<section class="max-w-6xl mx-auto my-[5vh] p-5 sm:p-10 flex flex-col gap-6">
   <div class="flex items-center justify-between">
     <h1 class="text-2xl font-semibold">
       Pagamentos
@@ -26,11 +26,83 @@
       </fieldset>
     </form>
 
-    <div *ngIf="!!payments.length; else isEmpty">
-      <div *ngFor="let payment of payments">
-        {{ payment.description }}
-      </div>
-    </div>
+    <ul *ngIf="!!payments.length; else isEmpty" class="flex flex-col overflow-y-auto gap-2 sm:gap-4">
+      <li *ngFor="let payment of payments" [ngClass]="{ 'border-l-red-400': isExpired(payment) }"
+        class="hover:bg-slate-50 delay-100 ease-in-out rounded border border-slate-200 border-l-8 shadow">
+        <a [title]="payment.description" [href]="getPaymentURL(payment.id)">
+          <div class="desktop flex w-[500px] md:w-full p-6 justify-between items-center">
+            <div class="flex gap-6 items-center">
+              <span class="material-symbols-outlined">
+                {{ getIconByCategory(payment.paymentCategory.id) }}
+              </span>
+
+              <div class="flex flex-col">
+                <span class="text-slate-700 font-bold">
+                  {{ payment.description }}
+                </span>
+
+                <small class="text-slate-500">
+                  {{ payment.paymentCategory.name }}
+                </small>
+              </div>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-slate-700 font-bold">
+                {{ payment.deadlineAt | date:'dd/MM/yyyy' }}
+              </span>
+
+              <small class="text-slate-500">
+                Vencimento
+              </small>
+            </div>
+
+            <span *ngIf="payment.payed; else pendente" class="bg-green-200 rounded px-4 py-1 text-green-700">
+              Debitado
+            </span>
+
+            <ng-template #pendente>
+              <span class="bg-blue-200 primary-color rounded px-4 py-1">
+                Pendente
+              </span>
+            </ng-template>
+
+            <span class="font-bold">
+              R$ {{ payment.amount | currencyBRL }}
+            </span>
+          </div>
+
+          <div class="mobile flex flex-col justify-center px-3 py-4 gap-2"
+            [ngClass]="{ 'border-l-red-400': isExpired(payment) }">
+            <div class="flex justify-between">
+              <div class="flex flex-col w-8/12">
+                <span class="text-slate-700 font-bold truncate">
+                  {{ payment.description }}
+                </span>
+              </div>
+
+              <span class="font-bold">
+                R$ {{ payment.amount | currencyBRL }}
+              </span>
+            </div>
+
+            <div class="flex flex-row justify-between items-center">
+              <small class="text-slate-500">
+                {{ payment.deadlineAt | date:'dd/MM/yyyy' }}
+              </small>
+
+              <small *ngIf="payment.payed" class="bg-green-200 text-green-700 rounded px-2 py-1">
+                Debitado
+              </small>
+
+              <small *ngIf="!payment.payed" class="bg-blue-200 primary-color rounded px-2 py-1">
+                Pendente
+              </small>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
 
     <ng-template #isEmpty>
       <div *ngIf="!hasFailed" class="text-slate-500 h-[20vh] flex justify-center items-center">

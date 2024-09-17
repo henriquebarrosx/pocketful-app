@@ -8,6 +8,20 @@ import { LocalDateService } from '../../shared/services/internal/local-date/inde
 import { LocalDateFormat } from '../../shared/services/internal/local-date/types';
 import { FormParams } from './types/form';
 
+enum IdentificadorCategoria {
+  EDUCACAO = 1,
+  ELETRONICOS,
+  LAZER,
+  RESTAURANTE,
+  SAUDE,
+  SERVICOS,
+  SUPERMERCADO,
+  TRANSPORTE,
+  VESTUARIO,
+  CASA,
+  VIAGEM,
+}
+
 @Component({
   selector: 'app-payments-page',
   templateUrl: './payments-page.component.html',
@@ -40,6 +54,37 @@ export class PaymentsPageComponent {
           return of([])
         })
       );
+  }
+
+  getPaymentURL(id: number): string {
+    return `/payments/${id}`
+  }
+
+  isExpired(payment: PaymentResponseDTO) {
+    if (payment.payed) return false;
+    return this.localDate.isAfter(new Date(), payment.deadlineAt);
+  }
+
+  getIconByCategory(categoryId: number): string {
+    const iconByCategory: Record<number, string> = {
+      [IdentificadorCategoria.CASA]: 'house',
+      [IdentificadorCategoria.EDUCACAO]: 'edit',
+      [IdentificadorCategoria.ELETRONICOS]: 'stadia_controller',
+      [IdentificadorCategoria.LAZER]: 'sports_tennis',
+      [IdentificadorCategoria.RESTAURANTE]: 'ramen_dining',
+      [IdentificadorCategoria.SAUDE]: 'heart_plus',
+      [IdentificadorCategoria.SERVICOS]: 'build',
+      [IdentificadorCategoria.SUPERMERCADO]: 'shopping_cart',
+      [IdentificadorCategoria.TRANSPORTE]: 'local_taxi',
+      [IdentificadorCategoria.VESTUARIO]: 'shopping_bag',
+      [IdentificadorCategoria.VIAGEM]: 'flight',
+    }
+
+    if (!iconByCategory[categoryId]) {
+      throw new Error('categoria não possui mapeamento de ícone');
+    }
+
+    return iconByCategory[categoryId];
   }
 
   private getInitializedFormGroup(): FormGroup {
