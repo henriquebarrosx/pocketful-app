@@ -1,5 +1,5 @@
-<main class="p-8 max-w-3xl mx-auto">
-  <form (ngSubmit)="onSubmit()" [formGroup]="formControl" class="flex flex-col gap-6 md:gap-6 w-full">
+<main class="p-8 max-w-3xl mx-auto mt-[10vh]">
+  <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" class="flex flex-col gap-6 md:gap-6 w-full">
     <h1 class="text-2xl font-semibold text-slate-700">
       Cadastrar pagamento
     </h1>
@@ -15,12 +15,13 @@
             R$
           </span>
 
-          <input id="amount" formControlName="amount" type="text" placeholder="0,00"
+          <input id="amount" name="amount" formControlName="amount" type="text" placeholder="0,00"
+            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'amount') }"
             class="w-full px-4 h-12 border border-slate-200 rounded-r" />
         </div>
 
-        <div *ngIf="isFieldValidationVisible(formControl, 'amount')">
-          <span *ngIf="validatePresenceOfErrors(formControl, 'amount', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'amount')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'amount', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
@@ -31,11 +32,12 @@
           Descrição
         </label>
 
-        <input id="description" formControlName="description" type="text" placeholder="Ex.: Transporte"
-          class="w-full px-4 h-12 border border-slate-200 rounded" />
+        <input id="description" name="description" formControlName="description" type="text"
+          placeholder="Ex.: Transporte" class="w-full px-4 h-12 border border-slate-200 rounded"
+          [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'description') }" />
 
-        <div *ngIf="isFieldValidationVisible(formControl, 'description')">
-          <span *ngIf="validatePresenceOfErrors(formControl, 'description', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'description')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'description', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
@@ -48,13 +50,14 @@
           Tipo
         </label>
 
-        <select formControlName="type" class="w-full px-4 h-12 border border-slate-200 rounded">
-          <option>Despesa</option>
-          <option>Entrada</option>
+        <select formControlName="type" [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'type') }"
+          class="w-full px-4 h-12 border border-slate-200 rounded">
+          <option value="Despesa">Despesa</option>
+          <option value="Entrada">Entrada</option>
         </select>
 
-        <div *ngIf="isFieldValidationVisible(formControl, 'type')">
-          <span *ngIf="validatePresenceOfErrors(formControl, 'description', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'type')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'description', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
@@ -73,31 +76,19 @@
         </div>
 
         <section class="relative">
-          <input type="text" formControlName="category" (focus)="displayCategories()"
-            placeholder="Selecione uma categoria" class="w-full px-4 h-12 border border-slate-200 rounded">
+          <select id="category" name="category" formControlName="category"
+            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'category') }"
+            class="w-full px-4 h-12 border border-slate-200 rounded">
+            <option value="">Selecione uma categoria</option>
 
-          <div *ngIf="isCategoriesVisible"
-            class="absolute flex flex-col w-full border bg-white max-h-72 overflow-y-auto overflow-x-hidden">
-            <ng-container *ngIf="categories$ | async as categorias; else isLoading">
-              <ng-container *ngIf="categorias.length; else noData">
-                <span *ngFor="let categoria of categorias" class="w-full h-full pointer hover:bg-slate-100 p-3">
-                  {{ categoria.name }}
-                </span>
-              </ng-container>
-
-              <ng-template #noData>
-                <span>Nenhuma categoria encontrada</span>
-              </ng-template>
-            </ng-container>
-
-            <ng-template #isLoading>
-              <span>Carregando...</span>
-            </ng-template>
-          </div>
+            <option *ngFor="let category of categories$ | async" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
         </section>
 
-        <div *ngIf="isFieldValidationVisible(formControl, 'category')">
-          <span *ngIf="validatePresenceOfErrors(formControl, 'category', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'category')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'category', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
@@ -110,12 +101,16 @@
           Dia do mês
         </label>
 
-        <input formControlName="dayOfMonth" placeholder="Ex.: 05"
-          class="w-full px-4 h-12 border border-slate-200 rounded" />
+        <input type="date" id="dayOfMonth" name="dayOfMonth" formControlName="dayOfMonth" placeholder="00/00/0000"
+          class="text-field" [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'dayOfMonth') }" />
 
-        <div *ngIf="isFieldValidationVisible(formControl, 'dayOfMonth')">
-          <span *ngIf="validatePresenceOfErrors(formControl, 'dayOfMonth', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'dayOfMonth')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'dayOfMonth', 'required')" class="text-field-validation">
             Campo obrigatório.
+          </span>
+
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'dayOfMonth', 'invalidDate')" class="text-field-validation">
+            Data inválida.
           </span>
         </div>
       </fieldset>
@@ -127,6 +122,7 @@
 
         <div class="flex items-center">
           <input formControlName="times" placeholder="Ex.: 10"
+            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'times') }"
             class="w-full px-4 h-12 border border-slate-200 rounded" />
 
           <span class="flex items-center w-24 h-12 py-2 px-4 text-white rounded-r bg-slate-600">
@@ -134,8 +130,8 @@
           </span>
         </div>
 
-        <div *ngIf="isFieldValidationVisible(formControl, 'times')">
-          <span *ngIf="validatePresenceOfErrors(formControl, 'times', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'times')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'times', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
