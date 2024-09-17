@@ -10,6 +10,10 @@ export class LocalDateService {
     return format(period, formatStr);
   }
 
+  isValid(period: string | number | Date) {
+    return Number.isInteger(new Date(period).getTime());
+  }
+
   getStartOfMonth(period: string): Date {
     const date = parseISO(period);
     return startOfMonth(date);
