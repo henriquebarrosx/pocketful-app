@@ -138,6 +138,16 @@
       </fieldset>
     </div>
 
+    <div class="flex justify-start py-4">
+      <fieldset class="flex gap-2">
+        <input type="checkbox" id="payed" name="payed" formControlName="payed" class="" />
+
+        <label for="payed" class="font-semibold text-slate-700">
+          Marcar como pago
+        </label>
+      </fieldset>
+    </div>
+
     <small class="w-full">
       Será gerado um novo pagamento no valor de <strong class="underline">{{ valor }}</strong> no decorrer de
       <strong class="underline">{{ totaisMeses }}</strong> todo dia <strong class="underline">{{ diaMes }}</strong>.

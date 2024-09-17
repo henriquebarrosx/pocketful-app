@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { PaymentCategory } from '../../shared/models/payment-category';
 import { PaymentCategoryService } from '../../shared/services/external/payment-category/index.service';
 import { PaymentService } from '../../shared/services/external/payment/index.service';
+import { LocalDateService } from '../../shared/services/internal/local-date/index.service';
+import { LocalDateFormat } from '../../shared/services/internal/local-date/types';
 import { LoggerService } from '../../shared/services/internal/logger/logger.service';
 import { CurrencyFormaterService } from '../../shared/services/internal/mask/currency/currency.service';
 
@@ -28,6 +30,7 @@ export class NewPaymentPageComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
+    private localDate: LocalDateService,
     private loggerService: LoggerService,
     private paymentService: PaymentService,
     private paymentCategoryService: PaymentCategoryService,
@@ -52,7 +55,7 @@ export class NewPaymentPageComponent {
     const payload = {
       amount: this.currencyFormaterService.unformat(this.formGroup.value.amount),
       description: this.formGroup.value.description,
-      payed: false,
+      payed: this.formGroup.value.payed,
       isExpense: this.formGroup.value.type === 'Despesa',
       deadlineAt: this.formGroup.value.dayOfMonth,
       frequencyTimes: parseInt(this.formGroup.value.times),
@@ -85,8 +88,9 @@ export class NewPaymentPageComponent {
       description: [null, [Validators.required]],
       type: [null, [Validators.required]],
       category: [null, [Validators.required]],
-      dayOfMonth: [null, [Validators.required]],
-      times: [2, [Validators.required]],
+      dayOfMonth: [this.localDate.format(new Date(), LocalDateFormat.ISO_DATE), [Validators.required]],
+      times: [1, [Validators.required]],
+      payed: [false],
     });
   }
 

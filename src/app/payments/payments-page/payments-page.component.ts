@@ -20,6 +20,8 @@ enum IdentificadorCategoria {
   VESTUARIO,
   CASA,
   VIAGEM,
+  TRABALHO,
+  BENEFICIO,
 }
 
 @Component({
@@ -78,6 +80,8 @@ export class PaymentsPageComponent {
       [IdentificadorCategoria.TRANSPORTE]: 'local_taxi',
       [IdentificadorCategoria.VESTUARIO]: 'shopping_bag',
       [IdentificadorCategoria.VIAGEM]: 'flight',
+      [IdentificadorCategoria.TRABALHO]: 'work',
+      [IdentificadorCategoria.BENEFICIO]: 'redeem',
     }
 
     if (!iconByCategory[categoryId]) {
