@@ -11,21 +11,20 @@
     </a>
   </div>
 
+  <form (ngSubmit)="getPayments()" [formGroup]="formControl" class="flex md:flex-row flex-col w-full gap-4">
+    <fieldset class="flex flex-col gap-2 border-none w-full md:w-80">
+      <label for="startAt" class="text-field-label">De</label>
+      <input type="date" [max]="formControl.get('endAt')" formControlName="startAt" placeholder="00/00/0000"
+        (change)="getPayments()" class="text-field" />
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-2 border-none w-full md:w-80">
+      <label for="endAt" class="text-field-label">Para</label>
+      <input type="date" formControlName="endAt" placeholder="00/00/0000" (change)="getPayments()" class="text-field" />
+    </fieldset>
+  </form>
+
   <div *ngIf="payments$ | async as payments; else loading" class="flex flex-col gap-6">
-    <form (ngSubmit)="getPayments()" [formGroup]="formControl" class="flex md:flex-row flex-col w-full gap-4">
-      <fieldset class="flex flex-col gap-2 border-none w-full md:w-80">
-        <label for="startAt" class="text-field-label">De</label>
-        <input type="date" [max]="formControl.get('endAt')" formControlName="startAt" placeholder="00/00/0000"
-          (change)="getPayments()" class="text-field" />
-      </fieldset>
-
-      <fieldset class="flex flex-col gap-2 border-none w-full md:w-80">
-        <label for="endAt" class="text-field-label">Para</label>
-        <input type="date" formControlName="endAt" placeholder="00/00/0000" (change)="getPayments()"
-          class="text-field" />
-      </fieldset>
-    </form>
-
     <ul *ngIf="!!payments.length; else isEmpty" class="flex flex-col overflow-y-auto gap-2 sm:gap-4">
       <li *ngFor="let payment of payments" [ngClass]="{ 'border-l-red-400': isExpired(payment) }"
         class="hover:bg-slate-50 delay-100 ease-in-out rounded border border-slate-200 border-l-8 shadow">
@@ -118,9 +117,23 @@
   </div>
 
   <ng-template #loading>
-    <span class="text-slate-500">
-      Carregando...
-    </span>
+    <div *ngIf="!hasFailed" class="flex flex-col items-center justify-center gap-8 p-8 h-48 mt-[6vh]">
+      <div class="flex flex-col text-center text-slate-500 gap-3">
+        <span class="text-xl text-slate-500">
+          Carregando...
+        </span>
+
+        <div class="flex flex-col">
+          <span class="text-md">
+            Isso pode levar alguns instantes.
+          </span>
+
+          <span class="text-md">
+            Agradecemos sua paciência enquanto estamos preparando tudo para você.
+          </span>
+        </div>
+      </div>
+    </div>
   </ng-template>
 
   <div *ngIf="hasFailed" class="flex flex-col items-center justify-center gap-8 p-8 h-48 mt-[6vh]">
