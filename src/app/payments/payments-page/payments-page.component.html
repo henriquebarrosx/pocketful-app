@@ -30,8 +30,8 @@
       <li *ngFor="let payment of payments" [ngClass]="{ 'border-l-red-400': isExpired(payment) }"
         class="hover:bg-slate-50 delay-100 ease-in-out rounded border border-slate-200 border-l-8 shadow">
         <a [title]="payment.description" [href]="getPaymentURL(payment.id)">
-          <div class="desktop flex w-[500px] md:w-full p-6 justify-between items-center">
-            <div class="flex gap-6 items-center">
+          <div class="desktop p-6 grid grid-cols-4 gap-4">
+            <div class="flex items-center gap-6">
               <span class="material-symbols-outlined">
                 {{ getIconByCategory(payment.paymentCategory.id) }}
               </span>
@@ -47,7 +47,7 @@
               </div>
             </div>
 
-            <div class="flex flex-col">
+            <div class="flex flex-col items-center justify-center">
               <span class="text-slate-700 font-bold">
                 {{ payment.deadlineAt | date:'dd/MM/yyyy' }}
               </span>
@@ -57,19 +57,23 @@
               </small>
             </div>
 
-            <span *ngIf="payment.payed; else pendente" class="bg-green-200 rounded px-4 py-1 text-green-700">
-              Debitado
-            </span>
-
-            <ng-template #pendente>
-              <span class="bg-blue-200 primary-color rounded px-4 py-1">
-                Pendente
+            <div class="flex items-center justify-center">
+              <span *ngIf="payment.payed; else pendente" class="bg-green-200 rounded px-4 py-1 text-green-700">
+                Debitado
               </span>
-            </ng-template>
 
-            <span class="font-bold">
-              R$ {{ payment.amount | currencyBRL }}
-            </span>
+              <ng-template #pendente>
+                <span class="bg-blue-200 primary-color rounded px-4 py-1">
+                  Pendente
+                </span>
+              </ng-template>
+            </div>
+
+            <div class="flex items-center justify-end">
+              <span class="font-bold">
+                R$ {{ payment.amount | currencyBRL }}
+              </span>
+            </div>
           </div>
 
           <div class="mobile flex flex-col justify-center px-3 py-4 gap-2"
