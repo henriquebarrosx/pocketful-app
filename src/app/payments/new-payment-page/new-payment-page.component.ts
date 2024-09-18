@@ -94,14 +94,6 @@ export class NewPaymentPageComponent {
     });
   }
 
-  displayCategories() {
-    this.isCategoriesVisible = true;
-  }
-
-  hideCategories() {
-    this.isCategoriesVisible = false;
-  }
-
   applyCurrencyFormater(fieldName: string) {
     const field = this.formGroup.get(fieldName);
     if (!field) throw new Error(`field not found: ${fieldName}`)

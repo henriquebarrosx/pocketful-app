@@ -22,13 +22,17 @@ export class PaymentService {
       .pipe(take(1));
   }
 
+  get(id: number): Observable<PaymentResponseDTO> {
+    return this.httpClient.get<PaymentResponseDTO>(`${environment.API_BASE_URL}/v1/payments/${id}`);
+  }
+
   create(payload: PaymentCreationParamsDTO): Observable<{ id: number }> {
     return this.httpClient.post<{ id: number }>(`${environment.API_BASE_URL}/v1/payments`, payload)
       .pipe(take(1));
   }
 
-  update(payload: PaymentEditionParamsDTO): Observable<void> {
-    return this.httpClient.put<void>(`${environment.API_BASE_URL}/v1/payments/${payload.id}`, payload)
+  update(id: number, payload: PaymentEditionParamsDTO): Observable<void> {
+    return this.httpClient.put<void>(`${environment.API_BASE_URL}/v1/payments/${id}`, payload)
       .pipe(take(1));
   }
 

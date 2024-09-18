@@ -1,12 +1,12 @@
 <main class="p-8 max-w-3xl mx-auto mt-[10vh]">
   <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" class="flex flex-col gap-6 md:gap-6 w-full">
     <h1 class="text-2xl font-semibold text-slate-700">
-      Cadastrar pagamento
+      Pagamento
     </h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="amount" class="font-semibold text-slate-700">
+        <label for="valor" class="font-semibold text-slate-700">
           Valor
         </label>
 
@@ -15,29 +15,29 @@
             R$
           </span>
 
-          <input id="amount" name="amount" formControlName="amount" type="text" placeholder="0,00"
-            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'amount') }"
+          <input id="valor" name="valor" formControlName="valor" type="text" placeholder="0,00"
+            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'descricao') }"
             class="w-full px-4 h-12 border border-slate-200 rounded-r" />
         </div>
 
-        <div *ngIf="isFieldValidationVisible(formGroup, 'amount')">
-          <span *ngIf="validatePresenceOfErrors(formGroup, 'amount', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'descricao')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'descricao', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
       </fieldset>
 
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="description" class="font-semibold text-slate-700">
+        <label for="descricao" class="font-semibold text-slate-700">
           Descrição
         </label>
 
-        <input id="description" name="description" formControlName="description" type="text"
-          placeholder="Ex.: Transporte" class="w-full px-4 h-12 border border-slate-200 rounded"
-          [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'description') }" />
+        <input id="descricao" name="descricao" formControlName="descricao" type="text" placeholder="Ex.: Transporte"
+          class="w-full px-4 h-12 border border-slate-200 rounded"
+          [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'descricao') }" />
 
-        <div *ngIf="isFieldValidationVisible(formGroup, 'description')">
-          <span *ngIf="validatePresenceOfErrors(formGroup, 'description', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'descricao')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'descricao', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
@@ -46,17 +46,18 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="type" class="font-semibold text-slate-700">
+        <label for="despesa" class="font-semibold text-slate-700">
           Tipo
         </label>
 
-        <select formControlName="type" [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'type') }"
+        <select formControlName="despesa"
+          [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'despesa') }"
           class="w-full px-4 h-12 border border-slate-200 rounded">
-          <option value="Despesa">Despesa</option>
-          <option value="Entrada">Entrada</option>
+          <option value="0">Despesa</option>
+          <option value="1">Entrada</option>
         </select>
 
-        <div *ngIf="isFieldValidationVisible(formGroup, 'type')">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'despesa')">
           <span *ngIf="validatePresenceOfErrors(formGroup, 'description', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
@@ -65,25 +66,25 @@
 
       <fieldset class="flex flex-col w-full gap-2">
         <div class="flex items-center justify-between">
-          <label for="description" class="font-semibold text-slate-700">
+          <label for="categoria" class="font-semibold text-slate-700">
             Categoria
           </label>
         </div>
 
         <section class="relative">
-          <select id="category" name="category" formControlName="category"
-            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'category') }"
+          <select id="categoria" name="categoria" formControlName="categoria"
+            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'categoria') }"
             class="w-full px-4 h-12 border border-slate-200 rounded">
             <option value="">Selecione uma categoria</option>
 
-            <option *ngFor="let category of categories$ | async" [value]="category.id">
-              {{ category.name }}
+            <option *ngFor="let categoria of categorias$ | async" [value]="categoria.id">
+              {{ categoria.name }}
             </option>
           </select>
         </section>
 
-        <div *ngIf="isFieldValidationVisible(formGroup, 'category')">
-          <span *ngIf="validatePresenceOfErrors(formGroup, 'category', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'categoria')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'categoria', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
         </div>
@@ -92,37 +93,37 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-end">
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="dayOfMonth" class="font-semibold text-slate-700">
+        <label for="data" class="font-semibold text-slate-700">
           Dia do mês
         </label>
 
-        <input type="date" id="dayOfMonth" name="dayOfMonth" formControlName="dayOfMonth" placeholder="00/00/0000"
-          class="text-field" [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'dayOfMonth') }" />
+        <input type="date" id="data" name="data" formControlName="data" placeholder="00/00/0000" class="text-field"
+          [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'data') }" />
 
-        <div *ngIf="isFieldValidationVisible(formGroup, 'dayOfMonth')">
-          <span *ngIf="validatePresenceOfErrors(formGroup, 'dayOfMonth', 'required')" class="text-field-validation">
+        <div *ngIf="isFieldValidationVisible(formGroup, 'data')">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'data', 'required')" class="text-field-validation">
             Campo obrigatório.
           </span>
 
-          <span *ngIf="validatePresenceOfErrors(formGroup, 'dayOfMonth', 'invalidDate')" class="text-field-validation">
+          <span *ngIf="validatePresenceOfErrors(formGroup, 'data', 'invalidDate')" class="text-field-validation">
             Data inválida.
           </span>
         </div>
       </fieldset>
 
       <fieldset class="flex flex-col w-full gap-2">
-        <label for="times" class="font-semibold text-slate-700">
-          Número repetições
+        <label for="recorrencia" class="font-semibold text-slate-700">
+          Atualizar evento recorrente
         </label>
 
         <div class="flex items-center">
-          <input formControlName="times" placeholder="Ex.: 10"
-            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'times') }"
-            class="w-full px-4 h-12 border border-slate-200 rounded" />
-
-          <span class="flex items-center w-24 h-12 py-2 px-4 text-white rounded-r bg-slate-600">
-            vezes
-          </span>
+          <select id="recorrencia" name="recorrencia" formControlName="recorrencia"
+            [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'category') }"
+            class="w-full px-4 h-12 border border-slate-200 rounded">
+            <option selected value="0">Este pagamento</option>
+            <option value="1">Este e os pagamentos seguintes</option>
+            <option value="2">Todos os pagamentos</option>
+          </select>
         </div>
 
         <div *ngIf="isFieldValidationVisible(formGroup, 'times')">
@@ -135,9 +136,9 @@
 
     <div class="flex justify-start py-4">
       <fieldset class="flex gap-2">
-        <input type="checkbox" id="payed" name="payed" formControlName="payed" class="" />
+        <input type="checkbox" id="pago" name="pago" formControlName="pago" class="" />
 
-        <label for="payed" class="font-semibold text-slate-700">
+        <label for="pago" class="font-semibold text-slate-700">
           Marcar como pago
         </label>
       </fieldset>
@@ -153,7 +154,7 @@
 
     <div class="flex flex-col gap-6">
       <button type="submit" class="btn btn-primary h-16" title="Cadastrar transação">
-        CADASTRAR
+        ATUALIZAR
       </button>
 
       <a href="/">

@@ -6,12 +6,14 @@ import { NewPaymentPageComponent } from './new-payment-page/new-payment-page.com
 import { PaymentsPageComponent } from './payments-page/payments-page.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { CurrencyPipe } from '../shared/services/internal/pipes/currency/currency.pipe';
+import { EditPaymentPageComponent } from './edit-payment-page/edit-payment-page.component';
 
 @NgModule({
   declarations: [
     NewPaymentPageComponent,
     PaymentsPageComponent,
     CurrencyPipe,
+    EditPaymentPageComponent,
   ],
   imports: [
     CommonModule,

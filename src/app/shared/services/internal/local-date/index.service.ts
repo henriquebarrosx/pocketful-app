@@ -10,6 +10,10 @@ export class LocalDateService {
     return format(period, formatStr);
   }
 
+  parseISO(period: string) {
+    return parseISO(period)
+  }
+
   isValid(period: Period) {
     return Number.isInteger(new Date(period).getTime());
   }
