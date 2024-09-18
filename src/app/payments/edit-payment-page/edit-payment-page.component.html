@@ -1,8 +1,19 @@
 <main class="p-8 max-w-3xl mx-auto mt-[10vh]">
   <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" class="flex flex-col gap-6 md:gap-6 w-full">
-    <h1 class="text-2xl font-semibold text-slate-700">
-      Pagamento
-    </h1>
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold text-slate-700">
+        Pagamento
+      </h1>
+
+      <div>
+        <button (click)="exibirConfirmacaoExclusao()" type="button"
+          class="btn btn-danger-outlined rounded flex justify-center items-center h-12 px-6 gap-3">
+          <span class="font-semibold">
+            Excluir pagamento
+          </span>
+        </button>
+      </div>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
       <fieldset class="flex flex-col w-full gap-2">
@@ -113,16 +124,16 @@
 
       <fieldset class="flex flex-col w-full gap-2">
         <label for="recorrencia" class="font-semibold text-slate-700">
-          Atualizar evento recorrente
+          Atualizar pagamento recorrente
         </label>
 
         <div class="flex items-center">
           <select id="recorrencia" name="recorrencia" formControlName="recorrencia"
             [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'category') }"
             class="w-full px-4 h-12 border border-slate-200 rounded">
-            <option selected value="0">Este pagamento</option>
-            <option value="1">Este e os pagamentos seguintes</option>
-            <option value="2">Todos os pagamentos</option>
+            <option *ngFor="let opcao of opcoesRecorrencia" [selected]="opcao.selected" [value]="opcao.value">
+              {{ opcao.label }}
+            </option>
           </select>
         </div>
 
@@ -144,7 +155,7 @@
       </fieldset>
     </div>
 
-    <small class="w-full p-4 bg-blue-50 rounded flex items-center gap-3 text-blak">
+    <small class="w-full p-4 bg-[#DEE8F4] rounded flex items-center gap-3 text-blak">
       <span class="material-symbols-outlined text-[#00578B]">
         info
       </span>
@@ -165,3 +176,44 @@
     </div>
   </form>
 </main>
+
+<aside *ngIf="isConfirmacaoExclusaoVisivel"
+  class="modal absolute bottom-0 right-0 w-[500px] bg-white shadow-lg border overflow-y-auto">
+  <section class="p-10 flex flex-col gap-10">
+    <h1 class="text-2xl font-semibold text-slate-700">
+      Excluir Pagamento
+    </h1>
+
+    <fieldset class="flex flex-col w-full gap-2">
+      <label for="recorrenciaExclusao" class="font-semibold text-slate-700">
+        Excluir pagamento recorrente
+      </label>
+
+      <div class="flex items-center">
+        <select [(ngModel)]="opcaoConfirmacaoExclusao" id="recorrenciaExclusao" name="recorrenciaExclusao"
+          [ngClass]="{ 'invalid-text-field': isFieldHintDisplayed(formGroup, 'category') }"
+          class="w-full px-4 h-12 border border-slate-200 rounded">
+          <option *ngFor="let opcao of opcoesRecorrencia" [selected]="opcao.selected" [value]="opcao.value">
+            {{ opcao.label }}
+          </option>
+        </select>
+      </div>
+
+      <div *ngIf="isFieldValidationVisible(formGroup, 'times')">
+        <span *ngIf="validatePresenceOfErrors(formGroup, 'times', 'required')" class="text-field-validation">
+          Campo obrigatório.
+        </span>
+      </div>
+    </fieldset>
+
+    <div class="flex flex-col gap-3">
+      <button (click)="excluirPagamento()" type="button" class="btn btn-danger h-12" title="Cadastrar transação">
+        Confirmar
+      </button>
+
+      <button (click)="cancelarExclusao()" type="button" class="btn btn-danger-outlined h-12" title="Cancelar">
+        Cancelar
+      </button>
+    </div>
+  </section>
+</aside>

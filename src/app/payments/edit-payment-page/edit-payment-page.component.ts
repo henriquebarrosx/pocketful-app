@@ -10,7 +10,7 @@ import { LocalDateService } from '../../shared/services/internal/local-date/inde
 import { LocalDateFormat } from '../../shared/services/internal/local-date/types';
 import { LoggerService } from '../../shared/services/internal/logger/logger.service';
 import { CurrencyFormaterService } from '../../shared/services/internal/mask/currency/currency.service';
-import { PaymentResponseDTO } from '../../shared/services/external/payment/dtos/payment-response';
+import { PaymentResponseDTO, PaymentSelectionOption } from '../../shared/services/external/payment/dtos/payment-response';
 
 @Component({
   selector: 'app-edit-payment-page',
@@ -23,12 +23,28 @@ export class EditPaymentPageComponent {
 
   pagamento: PaymentResponseDTO | null = null;
 
-  valor = 'R$ 25,00'
-  diaMes = 12
-  totaisMeses = '3 meses'
-
+  opcaoConfirmacaoExclusao = PaymentSelectionOption.THIS_PAYMENT
+  isConfirmacaoExclusaoVisivel = false;
   isCategoriesVisible: boolean = false;
   isSubmitting: boolean = false;
+
+  opcoesRecorrencia = [
+    {
+      label: 'Este pagamento',
+      value: PaymentSelectionOption.THIS_PAYMENT,
+      selected: true,
+    },
+    {
+      label: 'Este e os pagamentos seguintes',
+      value: PaymentSelectionOption.THIS_AND_FUTURE_PAYMENTS,
+      selected: false,
+    },
+    {
+      label: 'Todos os pagamentos',
+      value: PaymentSelectionOption.ALL_PAYMENTS,
+      selected: false,
+    },
+  ]
 
   constructor(
     private router: Router,
@@ -137,20 +153,27 @@ export class EditPaymentPageComponent {
     })
   }
 
-  atualizarMensagemAuxiliar() {
-    const campoValor = this.formGroup.get('valor');
-    const campoData = this.formGroup.get('data');
-    const campoRecorrencia = this.formGroup.get('recorrencia');
+  exibirConfirmacaoExclusao() {
+    this.isConfirmacaoExclusaoVisivel = true;
+  }
 
-    if (!campoValor) throw new Error('campo "valor" não encontrado');
-    if (!campoData) throw new Error('campo "campoData" não encontrado');
-    if (!campoRecorrencia) throw new Error('campo "campoRecorrencia" não encontrado');
+  excluirPagamento() {
+    if (!this.pagamento) throw new Error('pagamento não encontrado');
 
-    // field.valueChanges.subscribe((value) => {
-    //   this.formGroup.patchValue({
-    //     [fieldName]: this.currencyFormaterService.format(value),
-    //   }, { emitEvent: false });
-    // })
+    this.paymentService
+      .delete({
+        id: this.pagamento?.id,
+        type: parseInt(this.opcaoConfirmacaoExclusao.toString()),
+      })
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/'])
+        }
+      });
+  }
+
+  cancelarExclusao() {
+    this.isConfirmacaoExclusaoVisivel = false;
   }
 
   isFieldHintDisplayed(formControl: FormGroup<any>, name: string): boolean {
