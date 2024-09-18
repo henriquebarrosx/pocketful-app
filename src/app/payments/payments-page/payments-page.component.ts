@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 import { PaymentResponseDTO } from '../../shared/services/external/payment/dtos/payment-response';
 import { PaymentService } from '../../shared/services/external/payment/index.service';
@@ -9,7 +9,8 @@ import { LocalDateFormat } from '../../shared/services/internal/local-date/types
 import { FormParams } from './types/form';
 
 enum IdentificadorCategoria {
-  EDUCACAO = 1,
+  CASA = 1,
+  EDUCACAO,
   ELETRONICOS,
   LAZER,
   RESTAURANTE,
@@ -18,10 +19,8 @@ enum IdentificadorCategoria {
   SUPERMERCADO,
   TRANSPORTE,
   VESTUARIO,
-  CASA,
   VIAGEM,
   TRABALHO,
-  BENEFICIO,
 }
 
 @Component({
@@ -51,6 +50,7 @@ export class PaymentsPageComponent {
     this.payments$ = this.paymentService
       .getAll({ from: startAt, to: endAt })
       .pipe(
+        tap(() => this.hasFailed = false),
         catchError(() => {
           this.hasFailed = true
           return of([])
@@ -81,7 +81,6 @@ export class PaymentsPageComponent {
       [IdentificadorCategoria.VESTUARIO]: 'shopping_bag',
       [IdentificadorCategoria.VIAGEM]: 'flight',
       [IdentificadorCategoria.TRABALHO]: 'work',
-      [IdentificadorCategoria.BENEFICIO]: 'redeem',
     }
 
     if (!iconByCategory[categoryId]) {
