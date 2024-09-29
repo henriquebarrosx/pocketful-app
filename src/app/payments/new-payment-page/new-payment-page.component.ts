@@ -38,7 +38,7 @@ export class NewPaymentPageComponent {
   ) {
     this.formGroup = this.getFormBuilder();
     this.categories$ = this.paymentCategoryService.getAll();
-    this.applyCurrencyFormater('amount');
+    this.aplicarFormatadorMoeda('amount');
   }
 
   onSubmit() {
@@ -94,7 +94,7 @@ export class NewPaymentPageComponent {
     });
   }
 
-  applyCurrencyFormater(fieldName: string) {
+  aplicarFormatadorMoeda(fieldName: string) {
     const field = this.formGroup.get(fieldName);
     if (!field) throw new Error(`field not found: ${fieldName}`)
 

@@ -58,6 +58,7 @@ export class EditPaymentPageComponent {
   ) {
     const idPagamento = this.activatedRoute.snapshot.params['id'];
     this.buscarPagamento(idPagamento);
+    this.aplicarFormatadorMoeda('amount');
 
     this.formGroup = this.obterFormularioInicial();
     this.categorias$ = this.paymentCategoryService.getAll();
@@ -174,6 +175,17 @@ export class EditPaymentPageComponent {
 
   cancelarExclusao() {
     this.isConfirmacaoExclusaoVisivel = false;
+  }
+
+  aplicarFormatadorMoeda(fieldName: string) {
+    const field = this.formGroup.get(fieldName);
+    if (!field) throw new Error(`field not found: ${fieldName}`)
+
+    field.valueChanges.subscribe((value) => {
+      this.formGroup.patchValue({
+        [fieldName]: this.currencyFormaterService.format(value),
+      }, { emitEvent: false });
+    })
   }
 
   isFieldHintDisplayed(formControl: FormGroup<any>, name: string): boolean {
