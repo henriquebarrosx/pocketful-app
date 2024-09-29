@@ -58,7 +58,6 @@ export class EditPaymentPageComponent {
   ) {
     const idPagamento = this.activatedRoute.snapshot.params['id'];
     this.buscarPagamento(idPagamento);
-    this.aplicarFormatadorMoeda('amount');
 
     this.formGroup = this.obterFormularioInicial();
     this.categorias$ = this.paymentCategoryService.getAll();
@@ -72,7 +71,7 @@ export class EditPaymentPageComponent {
       .subscribe({
         next: (pagamento) => {
           this.pagamento = pagamento;
-          this.formGroup = this.atualizarFormulario(pagamento)
+          this.atualizarFormulario(pagamento);
         }
       })
   }
@@ -132,14 +131,14 @@ export class EditPaymentPageComponent {
   }
 
   atualizarFormulario(pagamento: PaymentResponseDTO) {
-    return this.formBuilder.group({
-      valor: [this.currencyFormaterService.format(pagamento.amount), [Validators.required]],
-      descricao: [pagamento.description, [Validators.required]],
-      despesa: [pagamento.expense ? '0' : '1', [Validators.required]],
-      categoria: [pagamento.paymentCategory.id, [Validators.required]],
-      data: [this.localDate.format(this.localDate.parseISO(pagamento.deadlineAt), LocalDateFormat.ISO_DATE), [Validators.required]],
-      recorrencia: [0, [Validators.required]],
-      pago: [pagamento.payed],
+    return this.formGroup.patchValue({
+      valor: this.currencyFormaterService.format(pagamento.amount),
+      descricao: pagamento.description,
+      despesa: pagamento.expense ? '0' : '1',
+      categoria: pagamento.paymentCategory.id,
+      data: this.localDate.format(this.localDate.parseISO(pagamento.deadlineAt), LocalDateFormat.ISO_DATE),
+      recorrencia: 0,
+      pago: pagamento.payed,
     });
   }
 
