@@ -45,7 +45,9 @@ export class PaymentsPageComponent {
   }
 
   getPayments() {
-    const { startAt, endAt } = this.formControl.value
+    const { startAt, endAt } = this.formControl.value;
+
+    this.inserirFiltrosNaURL(startAt, endAt);
 
     this.payments$ = this.paymentService
       .getAll({ from: startAt, to: endAt })
@@ -56,6 +58,24 @@ export class PaymentsPageComponent {
           return of([])
         })
       );
+  }
+
+  inserirFiltrosNaURL(startAt: string, endAt: string) {
+    const url = new URL(window.location.href);
+
+    url.searchParams.set('startAt', startAt);
+    url.searchParams.set('endAt', endAt);
+
+    window.history.pushState(null, '', url);
+  }
+
+  obterFiltroNaURL(chave: string, valorPadrao: string) {
+    const url = new URL(window.location.href);
+    const data = url.searchParams.get(chave);
+
+    if (!data) return valorPadrao;
+
+    return this.localDate.isValid(data) ? data : valorPadrao;
   }
 
   getPaymentURL(id: number): string {
@@ -93,8 +113,8 @@ export class PaymentsPageComponent {
   private getInitializedFormGroup(): FormGroup {
     return this.formBuilder
       .group<FormParams>({
-        startAt: [this.getStartofMonth()],
-        endAt: [this.getEndOfMonth()],
+        startAt: [this.obterFiltroNaURL('startAt', this.getStartofMonth())],
+        endAt: [this.obterFiltroNaURL('endAt', this.getEndOfMonth())],
       })
   }
 
