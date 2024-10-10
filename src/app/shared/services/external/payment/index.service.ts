@@ -37,7 +37,7 @@ export class PaymentService {
   }
 
   delete(payload: PaymentDeletionParamsDTO): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.API_BASE_URL}/v1/payments/${payload.id}?type=${payload.type}`)
+    return this.httpClient.delete<void>(`${environment.API_BASE_URL}/v1/payments/${payload.id}`, { body: { type: payload.type } })
       .pipe(take(1));
   }
 }

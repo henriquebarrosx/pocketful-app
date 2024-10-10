@@ -1,4 +1,4 @@
-<main class="p-8 max-w-3xl mx-auto mt-[10vh]">
+<main *ngIf="pagamento; else pagamentoNaoEncontrado" class="p-8 max-w-3xl mx-auto mt-[10vh]">
   <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" class="flex flex-col gap-6 md:gap-6 w-full">
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-semibold text-slate-700">
@@ -176,6 +176,81 @@
     </div>
   </form>
 </main>
+
+<ng-template #pagamentoNaoEncontrado>
+  <div *ngIf="isCarregando; else falhou" class="flex flex-col items-center justify-center gap-8 p-8 h-48 mt-[6vh]">
+    <div class="flex flex-col text-center text-slate-500 gap-3">
+      <span class="text-xl text-slate-500">
+        Carregando...
+      </span>
+
+      <div class="flex flex-col">
+        <span class="text-md">
+          Isso pode levar alguns instantes.
+        </span>
+
+        <span class="text-md">
+          Agradecemos sua paciência enquanto estamos preparando tudo para você.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #falhou>
+    <div *ngIf="isPagamentoInexistente; else erroNoServidor">
+      <div class="flex flex-col items-center text-center text-slate-500 gap-3 mt-[10vh]">
+        <span class="text-xl">
+          Pagamento não encontrado!
+        </span>
+
+        <div class="flex flex-col">
+          <span class="text-md">
+            Parece que o pagamento que você procura não existe mais, ou ainda não foi criado.
+          </span>
+
+          <span class="text-md">
+            Por favor, volte para lista de pagamentos.
+          </span>
+        </div>
+
+        <div class="w-48 gap-10 mt-4">
+          <button (click)="voltar()" class="btn btn-primary-outlined">
+            Voltar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #erroNoServidor>
+      <div class="flex flex-col items-center text-center text-slate-500 gap-3 mt-[10vh]">
+        <span class="text-xl">
+          Sentimos muito!
+        </span>
+
+        <div class="flex flex-col">
+          <span class="text-md">
+            Parece que estamos enfrentando alguns problemas.
+          </span>
+
+          <span class="text-md">
+            Por favor, tente novamente mais tarde.
+          </span>
+        </div>
+
+        <div class="w-48 gap-10 mt-4">
+          <button (click)="buscarPagamento()" class="btn btn-primary-outlined">
+            Tentar novamente
+          </button>
+
+          <button (click)="voltar()" class="btn h-16">
+            Voltar
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</ng-template>
+
 
 <aside *ngIf="isConfirmacaoExclusaoVisivel"
   class="modal absolute bottom-0 right-0 w-[500px] bg-white shadow-lg border overflow-y-auto">

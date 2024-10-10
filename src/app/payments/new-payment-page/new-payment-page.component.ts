@@ -1,14 +1,14 @@
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import { PaymentCategory } from '../../shared/models/payment-category';
-import { PaymentCategoryService } from '../../shared/services/external/payment-category/index.service';
-import { PaymentService } from '../../shared/services/external/payment/index.service';
-import { LocalDateService } from '../../shared/services/internal/local-date/index.service';
 import { LocalDateFormat } from '../../shared/services/internal/local-date/types';
 import { LoggerService } from '../../shared/services/internal/logger/logger.service';
+import { PaymentService } from '../../shared/services/external/payment/index.service';
+import { LocalDateService } from '../../shared/services/internal/local-date/index.service';
+import { PaymentCategoryService } from '../../shared/services/external/payment-category/index.service';
 import { CurrencyFormaterService } from '../../shared/services/internal/mask/currency/currency.service';
 
 @Component({
@@ -17,28 +17,23 @@ import { CurrencyFormaterService } from '../../shared/services/internal/mask/cur
   styleUrls: ['./new-payment-page.component.sass'],
 })
 export class NewPaymentPageComponent {
-  formGroup: FormGroup;
   categories$: Observable<PaymentCategory[]>;
 
-  valor = 'R$ 25,00'
-  diaMes = 12
-  totaisMeses = '3 meses'
-
+  formGroup = this.obterFormularioInicial();
   isCategoriesVisible: boolean = false;
   isSubmitting: boolean = false;
 
   constructor(
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private localDate: LocalDateService,
-    private loggerService: LoggerService,
-    private paymentService: PaymentService,
-    private paymentCategoryService: PaymentCategoryService,
-    private currencyFormaterService: CurrencyFormaterService,
+    private readonly router: Router,
+    private readonly formBuilder: FormBuilder,
+    private readonly localDate: LocalDateService,
+    private readonly loggerService: LoggerService,
+    private readonly paymentService: PaymentService,
+    private readonly paymentCategoryService: PaymentCategoryService,
+    private readonly currencyFormaterService: CurrencyFormaterService,
   ) {
-    this.formGroup = this.getFormBuilder();
     this.categories$ = this.paymentCategoryService.getAll();
-    this.aplicarFormatadorMoeda('amount');
+    this.aplicarFormatacaoMoeda('amount');
   }
 
   onSubmit() {
@@ -65,24 +60,19 @@ export class NewPaymentPageComponent {
 
     this.paymentService.create(payload)
       .subscribe({
-        next: () => this.onSuccess(),
-        error: () => this.onError(),
+        next: ({ id }) => {
+          this.loggerService.info(`pagamento ${id} cadastrado com sucesso.`)
+          this.router.navigate([`/payments/${id}`]);
+        },
+        error: () => {
+          this.loggerService.error('Erro ao processar cadastro do pagamento!');
+          this.isSubmitting = false;
+          this.formGroup.markAllAsTouched();
+        },
       });
   }
 
-  private onSuccess() {
-    this.loggerService.info('pagamento cadastrado com sucesso. Redirecionando para o pagamentos.')
-    this.isSubmitting = false;
-    this.router.navigate(['/payments']);
-  }
-
-  private onError() {
-    this.loggerService.error('Erro ao processar cadastro de pagamento!');
-    this.isSubmitting = false;
-    this.formGroup.markAllAsTouched();
-  }
-
-  getFormBuilder(): FormGroup {
+  obterFormularioInicial(): FormGroup {
     return this.formBuilder.group({
       amount: ['0,00', [Validators.required]],
       description: [null, [Validators.required]],
@@ -94,7 +84,7 @@ export class NewPaymentPageComponent {
     });
   }
 
-  aplicarFormatadorMoeda(fieldName: string) {
+  aplicarFormatacaoMoeda(fieldName: string) {
     const field = this.formGroup.get(fieldName);
     if (!field) throw new Error(`field not found: ${fieldName}`)
 

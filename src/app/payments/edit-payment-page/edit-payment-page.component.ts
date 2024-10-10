@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, take } from 'rxjs';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { PaymentCategory } from '../../shared/models/payment-category';
-import { PaymentCategoryService } from '../../shared/services/external/payment-category/index.service';
-import { PaymentService } from '../../shared/services/external/payment/index.service';
-import { LocalDateService } from '../../shared/services/internal/local-date/index.service';
 import { LocalDateFormat } from '../../shared/services/internal/local-date/types';
 import { LoggerService } from '../../shared/services/internal/logger/logger.service';
+import { PaymentService } from '../../shared/services/external/payment/index.service';
+import { LocalDateService } from '../../shared/services/internal/local-date/index.service';
+import { PaymentCategoryService } from '../../shared/services/external/payment-category/index.service';
 import { CurrencyFormaterService } from '../../shared/services/internal/mask/currency/currency.service';
 import { PaymentResponseDTO, PaymentSelectionOption } from '../../shared/services/external/payment/dtos/payment-response';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-payment-page',
@@ -18,15 +19,16 @@ import { PaymentResponseDTO, PaymentSelectionOption } from '../../shared/service
   styleUrls: ['./edit-payment-page.component.sass']
 })
 export class EditPaymentPageComponent {
-  formGroup: FormGroup;
+  formGroup = this.obterFormularioInicial();
   categorias$: Observable<PaymentCategory[]>;
-
   pagamento: PaymentResponseDTO | null = null;
 
   opcaoConfirmacaoExclusao = PaymentSelectionOption.THIS_PAYMENT
   isConfirmacaoExclusaoVisivel = false;
   isCategoriesVisible: boolean = false;
   isSubmitting: boolean = false;
+  isCarregando: boolean = true;
+  isPagamentoInexistente: boolean = false;
 
   opcoesRecorrencia = [
     {
@@ -47,31 +49,38 @@ export class EditPaymentPageComponent {
   ]
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private localDate: LocalDateService,
-    private loggerService: LoggerService,
-    private paymentService: PaymentService,
-    private paymentCategoryService: PaymentCategoryService,
-    private currencyFormaterService: CurrencyFormaterService,
+    private readonly router: Router,
+    private readonly formBuilder: FormBuilder,
+    private readonly localDate: LocalDateService,
+    private readonly loggerService: LoggerService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly paymentService: PaymentService,
+    private readonly paymentCategoryService: PaymentCategoryService,
+    private readonly currencyFormaterService: CurrencyFormaterService,
   ) {
-    const idPagamento = this.activatedRoute.snapshot.params['id'];
-    this.buscarPagamento(idPagamento);
-
-    this.formGroup = this.obterFormularioInicial();
+    this.buscarPagamento();
     this.categorias$ = this.paymentCategoryService.getAll();
-
     this.aplicarFormatacaoMoeda('valor');
   }
 
-  buscarPagamento(id: number) {
-    this.paymentService.get(id)
+  buscarPagamento() {
+    const idPagamento = this.activatedRoute.snapshot.params['id'];
+    this.isCarregando = true;
+
+    this.paymentService.get(idPagamento)
       .pipe(take(1))
       .subscribe({
         next: (pagamento) => {
+          this.isCarregando = false;
           this.pagamento = pagamento;
           this.atualizarFormulario(pagamento);
+        },
+        error: (error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.NotFound) {
+            this.isPagamentoInexistente = true;
+          }
+
+          this.isCarregando = false;
         }
       })
   }
@@ -99,23 +108,20 @@ export class EditPaymentPageComponent {
       type: parseInt(this.formGroup.value.recorrencia),
     }
 
-    this.paymentService.update(this.pagamento.id, parametros)
+    this.paymentService
+      .update(this.pagamento.id, parametros)
       .subscribe({
-        next: () => this.onSuccess(),
-        error: () => this.onError(),
+        next: () => {
+          this.loggerService.info(`pagamento ${this.pagamento?.id} atualizado com sucesso.`)
+          this.isSubmitting = false;
+          this.router.navigate(['/payments']);
+        },
+        error: () => {
+          this.loggerService.error(`Erro ao processar atualização do pagamento ${this.pagamento?.id}!`);
+          this.isSubmitting = false;
+          this.formGroup.markAllAsTouched();
+        },
       });
-  }
-
-  private onSuccess() {
-    this.loggerService.info('pagamento atualizado com sucesso. Redirecionando para o pagamentos.')
-    this.isSubmitting = false;
-    this.router.navigate(['/payments']);
-  }
-
-  private onError() {
-    this.loggerService.error('Erro ao processar atualização de pagamento!');
-    this.isSubmitting = false;
-    this.formGroup.markAllAsTouched();
   }
 
   obterFormularioInicial(): FormGroup {
@@ -160,14 +166,19 @@ export class EditPaymentPageComponent {
   excluirPagamento() {
     if (!this.pagamento) throw new Error('pagamento não encontrado');
 
-    this.paymentService
-      .delete({
-        id: this.pagamento?.id,
-        type: parseInt(this.opcaoConfirmacaoExclusao.toString()),
-      })
+    const parametros = {
+      id: this.pagamento.id,
+      type: parseInt(this.opcaoConfirmacaoExclusao.toString()),
+    }
+
+    this.paymentService.delete(parametros)
       .subscribe({
         next: () => {
+          this.loggerService.info(`pagamento ${parametros.id} excluído com sucesso.`);
           this.router.navigate(['/'])
+        },
+        error: () => {
+          this.loggerService.error(`Erro ao processar exclusão do pagamento ${parametros.id}!`);
         }
       });
   }
@@ -176,15 +187,8 @@ export class EditPaymentPageComponent {
     this.isConfirmacaoExclusaoVisivel = false;
   }
 
-  aplicarFormatadorMoeda(fieldName: string) {
-    const field = this.formGroup.get(fieldName);
-    if (!field) throw new Error(`field not found: ${fieldName}`)
-
-    field.valueChanges.subscribe((value) => {
-      this.formGroup.patchValue({
-        [fieldName]: this.currencyFormaterService.format(value),
-      }, { emitEvent: false });
-    })
+  voltar() {
+    this.router.navigate(['/'])
   }
 
   isFieldHintDisplayed(formControl: FormGroup<any>, name: string): boolean {
